@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Alle Kurse</h2>
+<ul>
+    {% for kurs in object_list %}
+	<li><a href="{% url 'kurs_detail' kurs.pk %}">{{ kurs.name }} - {{ kurs.beschreibung }}</a></li>
+    {% endfor %}
+</ul>
+<a class="btn btn-success btn-sm" href="{% url 'neuer_kurs' %}">+ Neuen Kurs hinzufügen</a>
+{% endblock content %}

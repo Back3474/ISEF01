@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Kursdetails</h2>
+    <p>Name: {{kurs.name }}</p>
+    <p>Beschreibung: {{kurs.beschreibung}}</p>
+    <a class="btn btn-secondary btn-sm" href="{% url 'kurs_start' %}">Zurück</a>
+    <a class="btn btn-danger btn-sm" href="{% url 'kurs_delete' kurs.pk %}">Löschen</a>
+    <a class="btn btn-success btn-sm" href="{% url 'kurs_update' kurs.pk %}">Update</a>
+{% endblock content %}

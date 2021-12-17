@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Quiz App</h1>
+  <p>Welcome to the Quiz App!</p>
+  <h2>Dynamic content</h2>
+  <p>The Quiz App has the following record counts:</p>
+  <ul>
+    <li><strong>Kurs:</strong> {{ num_kurs }}</li>
+    <li><strong>Frage:</strong> {{ num_frage }}</li>
+  </ul>
+{% endblock %}
