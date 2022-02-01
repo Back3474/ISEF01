@@ -130,27 +130,46 @@ def TestSelect(request):
         data = form.cleaned_data.get("kurs")
         print(data.id)
         print(data.name)
-        return param_redirect(request, 'para_test', data.id, data.name) #, data.id, data.name)
+        return param_redirect(request, 'test_start', data.id) #, data.id, data.name)
 	  
   else:
       form = TestSelectForm()
   return render(request, 'test/test_select.html', {'form': form})
   
 @login_required(login_url='/accounts/login/')	
-def ParaTest(request, arg1, arg2):
+def TestStart(request, arg1): #, arg2
   if request.method == "POST":
     form = ParaTestForm(request.POST)
     if form.is_valid():
        #form.save()
        #return HttpResponseRedirect('/index.html')
         data1 = form.cleaned_data.get("arg1")
-        data2 = form.cleaned_data.get("arg2")
+        #data2 = form.cleaned_data.get("arg2")
         #return param_redirect(request, 'index') #, data.id, data.name)
 	  
   else:
       form = ParaTestForm()
       print(arg1)
-      print(arg2)
+      #print(arg2)
       form.fields["arg1"].initial = arg1
-      form.fields["arg2"].initial = arg2
+      #form.fields["arg2"].initial = arg2
+  return render(request, 'test/test_start.html', {'form': form})
+  
+@login_required(login_url='/accounts/login/')	
+def ParaTest(request, arg1): #, arg2
+  if request.method == "POST":
+    form = ParaTestForm(request.POST)
+    if form.is_valid():
+       #form.save()
+       #return HttpResponseRedirect('/index.html')
+        data1 = form.cleaned_data.get("arg1")
+        #data2 = form.cleaned_data.get("arg2")
+        #return param_redirect(request, 'index') #, data.id, data.name)
+	  
+  else:
+      form = ParaTestForm()
+      print(arg1)
+      #print(arg2)
+      form.fields["arg1"].initial = arg1
+      #form.fields["arg2"].initial = arg2
   return render(request, 'test/para_test.html', {'form': form})

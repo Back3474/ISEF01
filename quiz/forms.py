@@ -6,4 +6,4 @@ class TestSelectForm(forms.Form):
 	
 class ParaTestForm(forms.Form):
     arg1 = forms.CharField(max_length=50)
-    arg2 = forms.CharField(max_length=50)
+    #arg2 = forms.CharField(max_length=50)
