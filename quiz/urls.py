@@ -13,6 +13,7 @@ from .views import FrageDelete
 from .views import index
 from .views import TestSelect
 from .views import TestStart
+from .views import TestStart2
 from .views import ParaTest
 
 urlpatterns = [
@@ -21,7 +22,7 @@ urlpatterns = [
      path('kurs', KursHome.as_view(), name='kurs_start'),
 	 path('frage', FrageHome.as_view(), name='frage_start'),
 	 path('test', TestSelect, name='test_select'),
-	 path('test/<arg1>', TestStart, name='test_start'),
+	 path('test/<arg1>', TestStart2, name='test_start'),
 	 path('paratest', ParaTest, name='para_test'),
 	 path('paratest/<arg1>-<arg2>', ParaTest, name='para_test'),
 	 path('paratest/<arg1>', ParaTest, name='para_test'),

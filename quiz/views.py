@@ -173,3 +173,41 @@ def ParaTest(request, arg1): #, arg2
       form.fields["arg1"].initial = arg1
       #form.fields["arg2"].initial = arg2
   return render(request, 'test/para_test.html', {'form': form})
+
+@login_required(login_url='/accounts/login/')	  
+def TestStart2(request, arg1):
+    if request.method == 'POST':
+        print(request.POST)
+        #fragen=Frage.objects.all()
+        fragen=Frage.objects.filter(kurs = arg1)
+        score=0
+        wrong=0
+        correct=0
+        total=0
+        for f in fragen:
+            total+=1
+            print(request.POST.get(f.name))
+            print(f.antwort1)
+            print()
+            if f.name ==  request.POST.get(f.name):
+                score+=10
+                correct+=1
+            else:
+                wrong+=1
+        percent = score/(total*10) *100
+        context = {
+            'score':score,
+            'time': request.POST.get('timer'),
+            'correct':correct,
+            'wrong':wrong,
+            'percent':percent,
+            'total':total
+        }
+        return render(request,'test/result.html',context)
+    else:
+        #fragen=Frage.objects.all()
+        fragen=Frage.objects.filter(kurs = arg1)
+        context = {
+            'fragen':fragen
+        }
+        return render(request,'test/test_start.html',context)
