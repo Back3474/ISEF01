@@ -130,11 +130,16 @@ def TestSelect(request):
         data = form.cleaned_data.get("kurs")
         print(data.id)
         print(data.name)
+        context = {
+            'modulid':data.id,
+            'modulname':data.name
+        }
         return param_redirect(request, 'test_start', data.id) #, data.id, data.name)
 	  
   else:
       form = TestSelectForm()
   return render(request, 'test/test_select.html', {'form': form})
+
   
 @login_required(login_url='/accounts/login/')	
 def TestStart(request, arg1): #, arg2
@@ -174,40 +179,102 @@ def ParaTest(request, arg1): #, arg2
       #form.fields["arg2"].initial = arg2
   return render(request, 'test/para_test.html', {'form': form})
 
+def str2bool(v):
+  return v.lower() in ("on") 
+ 
 @login_required(login_url='/accounts/login/')	  
 def TestStart2(request, arg1):
     if request.method == 'POST':
         print(request.POST)
         #fragen=Frage.objects.all()
+        kurs=Kurs.objects.filter(id = arg1)
+        print(kurs)
         fragen=Frage.objects.filter(kurs = arg1)
-        score=0
-        wrong=0
-        correct=0
+        fragenanzahl=len(fragen)
+        punkte=0
+        falsch=0
+        korrekt=0
         total=0
         for f in fragen:
             total+=1
-            print(request.POST.get(f.name))
-            print(f.antwort1)
+            answers=(request.POST.getlist(f.name))
+            answercount=len(answers)
+            boolantwort1="False"
+            boolantwort2="False"
+            boolantwort3="False"
+            boolantwort4="False"
+
+            if '1' in str(answers):
+                boolantwort1="True"
+            if '2' in str(answers):
+                boolantwort2="True"
+            if '3' in str(answers):
+                boolantwort3="True"
+            if '4' in str(answers):
+                boolantwort4="True"
+            print(boolantwort1)
+            print(boolantwort2)
+            print(boolantwort3)
+            print(boolantwort4)
+
+            print("Richige Antwort")
+            print(f.antwort1richtig)
+            print(f.antwort2richtig)
+            print(f.antwort3richtig)
+            print(f.antwort4richtig)
             print()
-            if f.name ==  request.POST.get(f.name):
-                score+=10
-                correct+=1
+            if bool(boolantwort1) is bool(f.antwort1richtig):
+                #punkte+=10
+                korrekt+=1
             else:
-                wrong+=1
-        percent = score/(total*10) *100
+                falsch+=1
+                #if korrekt != 0:
+                  #korrekt-=1
+            if bool(boolantwort2) is bool(f.antwort2richtig):
+                #punkte+=10
+                korrekt+=1
+            else:
+                falsch+=1
+                #if korrekt != 0:
+                  #korrekt-=1
+            if bool(boolantwort3) is bool(f.antwort3richtig):
+                #punkte+=10
+                korrekt+=1
+            else:
+                falsch+=1
+                #if korrekt != 0:
+                  #korrekt-=1
+            if bool(boolantwort4) is bool(f.antwort4richtig):
+                #punkte+=10
+                korrekt+=1
+            else:
+                falsch+=1
+                #if korrekt != 0:
+                  #korrekt-=1
+        punkte=korrekt*10
+        prozent = punkte/(total*10) *100
         context = {
-            'score':score,
+            'punkte':punkte,
+            'fragenanzahl':fragenanzahl,
             'time': request.POST.get('timer'),
-            'correct':correct,
-            'wrong':wrong,
-            'percent':percent,
+            'korrekt':korrekt,
+            'falsch':falsch,
+            'prozent':prozent,
             'total':total
         }
         return render(request,'test/result.html',context)
     else:
         #fragen=Frage.objects.all()
+        kurs=Kurs.objects.filter(id = arg1)
+        for k in kurs:
+           kursname=k.name
+           kursbeschreibung=k.beschreibung
+        print(kursname)
+        print(kursbeschreibung)
         fragen=Frage.objects.filter(kurs = arg1)
         context = {
-            'fragen':fragen
+            'fragen':fragen,
+            'kursname':kursname,
+			'kursbeschreibung':kursbeschreibung
         }
         return render(request,'test/test_start.html',context)

@@ -3,7 +3,8 @@
 {% block content %}
 {% load static %}
 <div class="container ">
-<h1>Willkommen beim Test zu  {{kursname}} {{kursbeschreibung}}</h1>
+<h1>Willkommen beim Test</h1>
+ 
 <div align="right " id="displaytimer"><b>Timer: 0 seconds</b></div>
  
  <form method='post' action=''>
@@ -14,26 +15,26 @@
     </div>
     <div class="form-check">
         <div class="form-check">
-            <input class="form-check-input" type="checkbox" name="{{f.name}}" id="defaultCheck1" value="1">
-            <label class="form-check-label" for="defaultCheck1">
+            <input class="form-check-input" type="radio" id="gridRadios1" value="option1" checked>
+            <label class="form-check-label" for="gridRadios1">
                 {{f.antwort1}}
             </label>
         </div>
         <div class="form-check">
-            <input class="form-check-input" type="checkbox" name="{{f.name}}" id="defaultCheck2" value="2">
-            <label class="form-check-label" for="defaultCheck2">
+            <input class="form-check-input" type="radio" id="gridRadios2" value="option2">
+            <label class="form-check-label" for="gridRadios2">
                 {{f.antwort2}}
             </label>
         </div>
         <div class="form-check">
-            <input class="form-check-input" type="checkbox" name="{{f.name}}" id="defaultCheck3" value="3">
-            <label class="form-check-label" for="defaultCheck3">
+            <input class="form-check-input" type="radio" id="gridRadios1" value="option3">
+            <label class="form-check-label" for="gridRadios1">
                 {{f.antwort3}}
             </label>
         </div>
         <div class="form-check">
-            <input class="form-check-input" type="checkbox" name="{{f.name}}" id="defaultCheck4" value="4">
-            <label class="form-check-label" for="defaultCheck4">
+            <input class="form-check-input" type="radio" id="gridRadios2" value="option4">
+            <label class="form-check-label" for="gridRadios2">
                 {{f.antwort4}}
             </label>
         </div>
