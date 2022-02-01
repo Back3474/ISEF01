@@ -11,6 +11,14 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Kurs, Frage
+from .forms import TestSelectForm
+from .forms import ParaTestForm
+
+from urlparams.redirect import param_redirect #???
+#from django.http import HttpResponse
+#from django.http import HttpResponseRedirect
+#from django.urls import reverse
+#from django.shortcuts import redirect
 
 # Create your views here.
 
@@ -98,3 +106,51 @@ def index(request):
 
     # Render the HTML template index.html with the data in the context variable
     return render(request, 'index.html', context=context)
+
+#@login_required(login_url='/accounts/login/')
+#def test_select(request):
+#
+#    kurs_select = Kurs.objects.all()
+#
+#
+#    context = {
+#        'kurs_select': kurs_select,
+#    }
+#
+#    return render(request, 'test/test_select.html', context=context)
+
+
+@login_required(login_url='/accounts/login/')	
+def TestSelect(request):
+  if request.method == "POST":
+    form = TestSelectForm(request.POST)
+    if form.is_valid():
+       #form.save()
+       #return HttpResponseRedirect('/index.html')
+        data = form.cleaned_data.get("kurs")
+        print(data.id)
+        print(data.name)
+        return param_redirect(request, 'para_test', data.id, data.name) #, data.id, data.name)
+	  
+  else:
+      form = TestSelectForm()
+  return render(request, 'test/test_select.html', {'form': form})
+  
+@login_required(login_url='/accounts/login/')	
+def ParaTest(request, arg1, arg2):
+  if request.method == "POST":
+    form = ParaTestForm(request.POST)
+    if form.is_valid():
+       #form.save()
+       #return HttpResponseRedirect('/index.html')
+        data1 = form.cleaned_data.get("arg1")
+        data2 = form.cleaned_data.get("arg2")
+        #return param_redirect(request, 'index') #, data.id, data.name)
+	  
+  else:
+      form = ParaTestForm()
+      print(arg1)
+      print(arg2)
+      form.fields["arg1"].initial = arg1
+      form.fields["arg2"].initial = arg2
+  return render(request, 'test/para_test.html', {'form': form})

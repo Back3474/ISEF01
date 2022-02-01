@@ -11,12 +11,18 @@ from .views import FrageDetail
 from .views import FrageUpdate
 from .views import FrageDelete
 from .views import index
+from .views import TestSelect
+from .views import ParaTest
 
 urlpatterns = [
      #path('', KursHome.as_view(), name='kurs_start'),
 	 path('', index, name='index'),
      path('kurs', KursHome.as_view(), name='kurs_start'),
 	 path('frage', FrageHome.as_view(), name='frage_start'),
+	 path('test', TestSelect, name='test_select'),
+	 path('paratest', ParaTest, name='para_test'),
+	 path('paratest/<arg1>-<arg2>', ParaTest, name='para_test'),
+	 path('paratest/<arg1>', ParaTest, name='para_test'),
 	 path('kurs/neu/', KursCreate.as_view(), name='neuer_kurs'),
 	 path('frage/neu/', FrageCreate.as_view(), name='neue_frage'),
 	 path('kurs/<int:pk>/', KursDetail.as_view(), name='kurs_detail'),
