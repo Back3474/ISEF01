@@ -3,7 +3,15 @@
 {% block content %}
     <h2>Frage Details</h2>
     <p>Name: {{ frage.name }}</p>
-    <p>Kurs: {{ frage.kurs }}</p>
+	<p>Kurs: {{ frage.kurs }}</p>
+    <p>Antwort1: {{ frage.antwort1 }}</p>
+	<p>Antwort1richtig: {{ frage.antwort1richtig }}</p>
+	<p>Antwort2: {{ frage.antwort2 }}</p>
+	<p>Antwort2richtig: {{ frage.antwort2richtig }}</p>
+	<p>Antwort3: {{ frage.antwort3 }}</p>
+	<p>Antwort3richtig: {{ frage.antwort3richtig }}</p>
+	<p>Antwort4: {{ frage.antwort4 }}</p>
+	<p>Antwort4richtig: {{ frage.antwort4richtig }}</p>
     <a class="btn btn-secondary btn-sm" href="{% url 'frage_start' %}">Zurück</a>
     <a class="btn btn-danger btn-sm" href="{% url 'frage_delete' frage.pk %}">Löschen</a>
     <a class="btn btn-success btn-sm" href="{% url 'frage_update' frage.pk %}">Update</a>
