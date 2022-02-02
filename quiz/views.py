@@ -199,19 +199,19 @@ def TestStart2(request, arg1):
             total+=1
             answers=(request.POST.getlist(f.name))
             answercount=len(answers)
-            boolantwort1="False"
-            boolantwort2="False"
-            boolantwort3="False"
-            boolantwort4="False"
+            boolantwort1=bool(False)
+            boolantwort2=bool(False)
+            boolantwort3=bool(False)
+            boolantwort4=bool(False)
 
             if '1' in str(answers):
-                boolantwort1="True"
+                boolantwort1=bool(True)
             if '2' in str(answers):
-                boolantwort2="True"
+                boolantwort2=bool(True)
             if '3' in str(answers):
-                boolantwort3="True"
+                boolantwort3=bool(True)
             if '4' in str(answers):
-                boolantwort4="True"
+                boolantwort4=bool(True)
             print(boolantwort1)
             print(boolantwort2)
             print(boolantwort3)
@@ -223,34 +223,19 @@ def TestStart2(request, arg1):
             print(f.antwort3richtig)
             print(f.antwort4richtig)
             print()
-            if bool(boolantwort1) is bool(f.antwort1richtig):
-                #punkte+=10
+
+#
+
+            if bool(boolantwort1) is bool(f.antwort1richtig) and bool(boolantwort2) is bool(f.antwort2richtig) and bool(boolantwort3) is bool(f.antwort3richtig) and bool(boolantwort4) is bool(f.antwort4richtig):
+            #if bool(boolantwort1) == bool(f.antwort1richtig) and bool(boolantwort2) == bool(f.antwort2richtig) and bool(boolantwort3) == bool(f.antwort3richtig) and bool(boolantwort4) == bool(f.antwort4richtig):
+            #if boolantwort1 == bool(f.antwort1richtig) and boolantwort2 == bool(f.antwort2richtig) and boolantwort3 == bool(f.antwort3richtig) and boolantwort4 == bool(f.antwort4richtig):
+            #if bool(f.antwort1richtig) is boolantwort1 and bool(f.antwort2richtig) is boolantwort2 and bool(f.antwort3richtig) is boolantwort3 and bool(f.antwort4richtig) is boolantwort4:
+            #if boolantwort1 == f.antwort1richtig and boolantwort2 == f.antwort2richtig and boolantwort3 == f.antwort3richtig and boolantwort4 == f.antwort4richtig:
+                punkte+=10
                 korrekt+=1
             else:
                 falsch+=1
-                #if korrekt != 0:
-                  #korrekt-=1
-            if bool(boolantwort2) is bool(f.antwort2richtig):
-                #punkte+=10
-                korrekt+=1
-            else:
-                falsch+=1
-                #if korrekt != 0:
-                  #korrekt-=1
-            if bool(boolantwort3) is bool(f.antwort3richtig):
-                #punkte+=10
-                korrekt+=1
-            else:
-                falsch+=1
-                #if korrekt != 0:
-                  #korrekt-=1
-            if bool(boolantwort4) is bool(f.antwort4richtig):
-                #punkte+=10
-                korrekt+=1
-            else:
-                falsch+=1
-                #if korrekt != 0:
-                  #korrekt-=1
+
         punkte=korrekt*10
         prozent = punkte/(total*10) *100
         context = {
