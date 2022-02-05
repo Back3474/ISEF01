@@ -4,7 +4,7 @@
 <h2>Alle Fragen</h2>
 <ul>
     {% for frage in object_list %}
-	<li><a href="{% url 'frage_detail' frage.pk %}">{{ frage.name }} - {{ frage.kurs }}</a></li>
+	<li><a href="{% url 'frage_detail' frage.pk %}">{{ frage.kurs }} - {{ frage.name }}</a></li>
     {% endfor %}
 </ul>
 <a class="btn btn-success btn-sm" href="{% url 'neue_frage' %}">+ Neue Frage hinzufügen</a>
