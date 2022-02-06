@@ -1,0 +1,7 @@
+python -m venv env
+env/Scripts/activate
+
+pip install Django==3.2
+pip install django-url-params
+
+python manage.py runserver
