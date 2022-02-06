@@ -14,7 +14,7 @@ from .models import Kurs, Frage
 from .forms import TestSelectForm
 from .forms import ParaTestForm
 
-#from urlparams.redirect import param_redirect #???
+from urlparams.redirect import param_redirect #???
 #from django.http import HttpResponse
 #from django.http import HttpResponseRedirect
 #from django.urls import reverse
