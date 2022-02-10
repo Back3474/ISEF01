@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Ergebnis Details</h2>
+    <p>TestModus: {{ ergebnis.testmodus }}</p>
+	<p>Benutzername: {{ ergebnis.benutzername }}</p>
+    <p>Punkte: {{ ergebnis.punkte }}</p>
+    <p>Kursid: {{ ergebnis.kursid }}</p>
+    <p>Kursname: {{ ergebnis.kursname }}</p>
+    <p>Zeit (Sekunden): {{ ergebnis.zeitsekunden }}</p>
+    <p>Datum: {{ ergebnis.datum }}</p>
+    <p>Fragen Total: {{ ergebnis.fragentotal }}</p>
+    <p>Fragen korrekt: {{ ergebnis.fragenkorrekt }}</p>
+    <p>Fragen falsch: {{ ergebnis.fragenfalsch }}</p>
+
+    <a class="btn btn-secondary btn-sm" href="{% url 'ergebnis_start' %}">Zurück</a>
+{% endblock content %}

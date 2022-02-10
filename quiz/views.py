@@ -10,7 +10,7 @@ from django.views.generic import DeleteView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Kurs, Frage, RichtigOderFalsch
+from .models import Kurs, Frage, RichtigOderFalsch, Ergebnis
 from .forms import TestSelectForm
 from .forms import ParaTestForm
 
@@ -113,6 +113,14 @@ class RichtigOderFalschDelete(AuthDeleteView):
     model = RichtigOderFalsch
     template_name = 'richtigoderfalsch/richtigoderfalsch_delete.html'
     success_url = reverse_lazy('richtigoderfalsch_start')
+	
+class ErgebnisHome(AuthListView): 
+    model = Ergebnis
+    template_name = 'ergebnis/ergebnis_home.html'
+
+class ErgebnisDetail(AuthDetailView):
+    model = Ergebnis
+    template_name = 'ergebnis/ergebnis_detail.html'
 
 @login_required(login_url='/accounts/login/')
 def index(request):
@@ -234,6 +242,9 @@ def MCTestStart(request, arg1):
         print(request.POST)
         #fragen=Frage.objects.all()
         kurs=Kurs.objects.filter(id = arg1)
+        for k in kurs:
+           kursname=k.name
+           kursbeschreibung=k.beschreibung
         print(kurs)
         fragen=Frage.objects.filter(kurs = arg1)
         fragenanzahl=len(fragen)
@@ -277,22 +288,24 @@ def MCTestStart(request, arg1):
             #if boolantwort1 == bool(f.antwort1richtig) and boolantwort2 == bool(f.antwort2richtig) and boolantwort3 == bool(f.antwort3richtig) and boolantwort4 == bool(f.antwort4richtig):
             #if bool(f.antwort1richtig) is boolantwort1 and bool(f.antwort2richtig) is boolantwort2 and bool(f.antwort3richtig) is boolantwort3 and bool(f.antwort4richtig) is boolantwort4:
             #if boolantwort1 == f.antwort1richtig and boolantwort2 == f.antwort2richtig and boolantwort3 == f.antwort3richtig and boolantwort4 == f.antwort4richtig:
-                punkte+=10
+                punkte+=1
                 korrekt+=1
             else:
                 falsch+=1
 
-        punkte=korrekt*10
-        prozent = punkte/(total*10) *100
+        punkte=korrekt*1
+        prozent = punkte/(total*1) *100
         context = {
             'punkte':punkte,
-            'fragenanzahl':fragenanzahl,
+            'mcfragenanzahl':fragenanzahl,
             'time': request.POST.get('timer'),
             'korrekt':korrekt,
             'falsch':falsch,
             'prozent':prozent,
             'total':total
         }
+        reg = Ergebnis(testmodus='mc', benutzername=request.user.username, kursid=arg1, kursname=kursname, zeitsekunden=request.POST.get('timer'), datum=['%d-%m-%Y'], punkte=punkte, fragentotal=fragenanzahl, fragenkorrekt=korrekt, fragenfalsch=falsch )
+        reg.save()
         return render(request,'mctest/mctest_result.html',context)
     else:
         #fragen=Frage.objects.all()
@@ -316,6 +329,9 @@ def RFTestStart(request, arg1):
         print(request.POST)
         #fragen=RichtigOderFalsch.objects.all()
         kurs=Kurs.objects.filter(id = arg1)
+        for k in kurs:
+           kursname=k.name
+           kursbeschreibung=k.beschreibung
         print(kurs)
         rffragen=RichtigOderFalsch.objects.filter(kurs = arg1)
         rffragenanzahl=len(rffragen)
@@ -342,22 +358,24 @@ def RFTestStart(request, arg1):
 #
 
             if bool(boolantwort) is bool(rf.behauptungrichtig):
-                punkte+=10
+                punkte+=1
                 korrekt+=1
             else:
                 falsch+=1
 
-        punkte=korrekt*10
-        prozent = punkte/(total*10) *100
+        punkte=korrekt*1
+        prozent = punkte/(total*1) *100
         context = {
             'punkte':punkte,
-            'fragenanzahl':rffragenanzahl,
+            'rffragenanzahl':rffragenanzahl,
             'time': request.POST.get('timer'),
             'korrekt':korrekt,
             'falsch':falsch,
             'prozent':prozent,
             'total':total
         }
+        reg = Ergebnis(testmodus='rf', benutzername=request.user.username, kursid=arg1, kursname=kursname, zeitsekunden=request.POST.get('timer'), datum=['%d-%m-%Y'], punkte=punkte, fragentotal=rffragenanzahl, fragenkorrekt=korrekt, fragenfalsch=falsch )
+        reg.save()
         return render(request,'rftest/rftest_result.html',context)
     else:
         #fragen=RichtigOderFalsch.objects.all()

@@ -41,3 +41,22 @@ class RichtigOderFalsch(models.Model):
 		
     def get_absolute_url(self):
         return reverse('richtigoderfalsch_detail', args=[str(self.id)])
+
+class Ergebnis(models.Model):
+    testmodus = models.CharField(max_length=20,blank=False)
+    benutzername = models.CharField(max_length=50,blank=False)
+    kursid = models.CharField(max_length=5,blank=False)
+    kursname = models.CharField(max_length=50,blank=False)
+    zeitsekunden = models.IntegerField(blank=False)
+    datum = models.DateField(auto_now_add=True)
+    punkte = models.IntegerField(blank=False)
+    fragentotal = models.IntegerField(blank=False)
+    fragenkorrekt = models.IntegerField(blank=False)
+    fragenfalsch = models.IntegerField(blank=False)
+
+	
+    def __str__(self):
+        return self.benutzername
+		
+    def get_absolute_url(self):
+        return reverse('ergebnis_detail', args=[str(self.id)])

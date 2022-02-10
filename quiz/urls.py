@@ -15,6 +15,8 @@ from .views import RichtigOderFalschCreate
 from .views import RichtigOderFalschDetail
 from .views import RichtigOderFalschUpdate
 from .views import RichtigOderFalschDelete
+from .views import ErgebnisHome
+from .views import ErgebnisDetail
 from .views import index
 from .views import MCTestSelect
 from .views import RFTestSelect
@@ -28,7 +30,8 @@ urlpatterns = [
 	 path('', index, name='index'),
      path('kurs', KursHome.as_view(), name='kurs_start'),
 	 path('frage', FrageHome.as_view(), name='frage_start'),
-     path('richtigoderfalsch', RichtigOderFalschHome.as_view(), name='richtigoderfalsch_start'),     
+     path('richtigoderfalsch', RichtigOderFalschHome.as_view(), name='richtigoderfalsch_start'),
+     path('ergebnis', ErgebnisHome.as_view(), name='ergebnis_start'),   	 
 	 path('mctest', MCTestSelect, name='mctest_select'),
      path('rftest', RFTestSelect, name='rftest_select'),
 	 path('mctest/<arg1>', MCTestStart, name='mctest_start'),
@@ -42,6 +45,7 @@ urlpatterns = [
 	 path('kurs/<int:pk>/', KursDetail.as_view(), name='kurs_detail'),
 	 path('frage/<int:pk>/', FrageDetail.as_view(), name='frage_detail'),
      path('richtigoderfalsch/<int:pk>/', RichtigOderFalschDetail.as_view(), name='richtigoderfalsch_detail'),
+     path('ergebnis/<int:pk>/', ErgebnisDetail.as_view(), name='ergebnis_detail'),
 	 path('kurs/<int:pk>/update/', KursUpdate.as_view(), name='kurs_update'),
 	 path('frage/<int:pk>/update/', FrageUpdate.as_view(), name='frage_update'),
      path('richtigoderfalsch/<int:pk>/update/', RichtigOderFalschUpdate.as_view(), name='richtigoderfalsch_update'),
