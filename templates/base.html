@@ -11,7 +11,7 @@
 				<a class="navbar-brand" href="{% url 'index' %}">Main</a>
                 <a class="navbar-brand" href="{% url 'kurs_start' %}">Kurs</a>
 				<a class="navbar-brand" href="{% url 'frage_start' %}">Frage</a>
-				<a class="navbar-brand" href="{% url 'test_select' %}">Test</a>
+				<a class="navbar-brand" href="{% url 'mctest_select' %}">MCTest</a>
 				
 				{% if user.is_authenticated %}
                 <a class="navbar-brand ml-auto order-md-last">Benutzername: {{ user.get_username }}</a>

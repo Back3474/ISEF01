@@ -117,11 +117,11 @@ def index(request):
 #        'kurs_select': kurs_select,
 #    }
 #
-#    return render(request, 'test/test_select.html', context=context)
+#    return render(request, 'mctest/mctest_select.html', context=context)
 
 
 @login_required(login_url='/accounts/login/')	
-def TestSelect(request):
+def MCTestSelect(request):
   if request.method == "POST":
     form = TestSelectForm(request.POST)
     if form.is_valid():
@@ -134,11 +134,11 @@ def TestSelect(request):
             'modulid':data.id,
             'modulname':data.name
         }
-        return param_redirect(request, 'test_start', data.id) #, data.id, data.name)
+        return param_redirect(request, 'mctest_start', data.id) #, data.id, data.name)
 	  
   else:
       form = TestSelectForm()
-  return render(request, 'test/test_select.html', {'form': form})
+  return render(request, 'mctest/mctest_select.html', {'form': form})
 
   
 @login_required(login_url='/accounts/login/')	
@@ -158,7 +158,7 @@ def TestStart(request, arg1): #, arg2
       #print(arg2)
       form.fields["arg1"].initial = arg1
       #form.fields["arg2"].initial = arg2
-  return render(request, 'test/test_start.html', {'form': form})
+  return render(request, 'mctest/mctest_start.html', {'form': form})
   
 @login_required(login_url='/accounts/login/')	
 def ParaTest(request, arg1): #, arg2
@@ -177,13 +177,13 @@ def ParaTest(request, arg1): #, arg2
       #print(arg2)
       form.fields["arg1"].initial = arg1
       #form.fields["arg2"].initial = arg2
-  return render(request, 'test/para_test.html', {'form': form})
+  return render(request, 'mctest/para_test.html', {'form': form})
 
 def str2bool(v):
   return v.lower() in ("on") 
  
 @login_required(login_url='/accounts/login/')	  
-def TestStart2(request, arg1):
+def MCTestStart(request, arg1):
     if request.method == 'POST':
         print(request.POST)
         #fragen=Frage.objects.all()
@@ -247,7 +247,7 @@ def TestStart2(request, arg1):
             'prozent':prozent,
             'total':total
         }
-        return render(request,'test/result.html',context)
+        return render(request,'mctest/mctest_result.html',context)
     else:
         #fragen=Frage.objects.all()
         kurs=Kurs.objects.filter(id = arg1)
@@ -262,4 +262,4 @@ def TestStart2(request, arg1):
             'kursname':kursname,
 			'kursbeschreibung':kursbeschreibung
         }
-        return render(request,'test/test_start.html',context)
+        return render(request,'mctest/mctest_start.html',context)

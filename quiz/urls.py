@@ -11,9 +11,9 @@ from .views import FrageDetail
 from .views import FrageUpdate
 from .views import FrageDelete
 from .views import index
-from .views import TestSelect
+from .views import MCTestSelect
 from .views import TestStart
-from .views import TestStart2
+from .views import MCTestStart
 from .views import ParaTest
 
 urlpatterns = [
@@ -21,8 +21,8 @@ urlpatterns = [
 	 path('', index, name='index'),
      path('kurs', KursHome.as_view(), name='kurs_start'),
 	 path('frage', FrageHome.as_view(), name='frage_start'),
-	 path('test', TestSelect, name='test_select'),
-	 path('test/<arg1>', TestStart2, name='test_start'),
+	 path('mctest', MCTestSelect, name='mctest_select'),
+	 path('mctest/<arg1>', MCTestStart, name='mctest_start'),
 	 path('paratest', ParaTest, name='para_test'),
 	 path('paratest/<arg1>-<arg2>', ParaTest, name='para_test'),
 	 path('paratest/<arg1>', ParaTest, name='para_test'),
