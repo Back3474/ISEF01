@@ -5,7 +5,7 @@
 <div class="container">
     <form method="POST">
       <fieldset>
-        <legend>Wähle Kurs für MC-Test</legend>
+        <legend>Test</legend>
         {% csrf_token %}
         {{ form.as_p }}
 		<a class="btn btn-danger btn-sm" href="{% url 'index' %}">Abbrechen</a>

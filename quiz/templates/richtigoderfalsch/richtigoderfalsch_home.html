@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Alle RF-Fragen</h2>
+<ul>
+    {% for richtigoderfalsch in object_list %}
+	<li><a href="{% url 'richtigoderfalsch_detail' richtigoderfalsch.pk %}">{{ richtigoderfalsch.kurs }} - {{ richtigoderfalsch.name }}</a></li>
+    {% endfor %}
+</ul>
+<a class="btn btn-success btn-sm" href="{% url 'richtigoderfalsch_neue_frage' %}">+ Neue RF-Frage hinzufügen</a>
+{% endblock content %}

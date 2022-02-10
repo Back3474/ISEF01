@@ -10,7 +10,7 @@ from django.views.generic import DeleteView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Kurs, Frage
+from .models import Kurs, Frage, RichtigOderFalsch
 from .forms import TestSelectForm
 from .forms import ParaTestForm
 
@@ -89,19 +89,45 @@ class FrageDelete(AuthDeleteView):
     model = Frage
     template_name = 'frage/frage_delete.html'
     success_url = reverse_lazy('frage_start')
+	
+class RichtigOderFalschHome(AuthListView): 
+    model = RichtigOderFalsch
+    template_name = 'richtigoderfalsch/richtigoderfalsch_home.html'
+	
+class RichtigOderFalschCreate(AuthCreateView):
+    model = RichtigOderFalsch
+    template_name = 'richtigoderfalsch/richtigoderfalsch_create.html'
+    fields = '__all__'
+    success_url = reverse_lazy('richtigoderfalsch_start')
+	
+class RichtigOderFalschDetail(AuthDetailView):
+    model = RichtigOderFalsch
+    template_name = 'richtigoderfalsch/richtigoderfalsch_detail.html'
+
+class RichtigOderFalschUpdate(AuthUpdateView):
+    model = RichtigOderFalsch
+    template_name = 'richtigoderfalsch/richtigoderfalsch_update.html'
+    fields = '__all__'
+	
+class RichtigOderFalschDelete(AuthDeleteView):
+    model = RichtigOderFalsch
+    template_name = 'richtigoderfalsch/richtigoderfalsch_delete.html'
+    success_url = reverse_lazy('richtigoderfalsch_start')
 
 @login_required(login_url='/accounts/login/')
 def index(request):
     """View function for home page of site."""
 
     # Generate counts of some of the main objects
-    num_frage = Frage.objects.all().count()
     num_kurs = Kurs.objects.all().count()
+    num_mcfrage = Frage.objects.all().count()
+    num_rffrage = RichtigOderFalsch.objects.all().count()
 
 
     context = {
-        'num_frage': num_frage,
         'num_kurs': num_kurs,
+        'num_mcfrage': num_mcfrage,
+        'num_rffrage': num_rffrage
     }
 
     # Render the HTML template index.html with the data in the context variable
@@ -139,6 +165,26 @@ def MCTestSelect(request):
   else:
       form = TestSelectForm()
   return render(request, 'mctest/mctest_select.html', {'form': form})
+  
+@login_required(login_url='/accounts/login/')	
+def RFTestSelect(request):
+  if request.method == "POST":
+    form = TestSelectForm(request.POST)
+    if form.is_valid():
+       #form.save()
+       #return HttpResponseRedirect('/index.html')
+        data = form.cleaned_data.get("kurs")
+        print(data.id)
+        print(data.name)
+        context = {
+            'modulid':data.id,
+            'modulname':data.name
+        }
+        return param_redirect(request, 'rftest_start', data.id) #, data.id, data.name)
+	  
+  else:
+      form = TestSelectForm()
+  return render(request, 'rftest/rftest_select.html', {'form': form})
 
   
 @login_required(login_url='/accounts/login/')	
@@ -263,3 +309,68 @@ def MCTestStart(request, arg1):
 			'kursbeschreibung':kursbeschreibung
         }
         return render(request,'mctest/mctest_start.html',context)
+		
+@login_required(login_url='/accounts/login/')	  
+def RFTestStart(request, arg1):
+    if request.method == 'POST':
+        print(request.POST)
+        #fragen=RichtigOderFalsch.objects.all()
+        kurs=Kurs.objects.filter(id = arg1)
+        print(kurs)
+        rffragen=RichtigOderFalsch.objects.filter(kurs = arg1)
+        rffragenanzahl=len(rffragen)
+        punkte=0
+        falsch=0
+        korrekt=0
+        total=0
+        for rf in rffragen:
+            total+=1
+            #answers=(request.POST.getlist(rf.name))
+            answers=request.POST.get(rf.name)
+            boolantwort=bool(False)
+
+            if '1' in str(answers):
+                boolantwort=bool(True)
+            if '2' in str(answers):
+                boolantwort=bool(False)
+            print(boolantwort)
+
+            print("Richige Antwort")
+            print(rf.behauptungrichtig)
+
+
+#
+
+            if bool(boolantwort) is bool(rf.behauptungrichtig):
+                punkte+=10
+                korrekt+=1
+            else:
+                falsch+=1
+
+        punkte=korrekt*10
+        prozent = punkte/(total*10) *100
+        context = {
+            'punkte':punkte,
+            'fragenanzahl':rffragenanzahl,
+            'time': request.POST.get('timer'),
+            'korrekt':korrekt,
+            'falsch':falsch,
+            'prozent':prozent,
+            'total':total
+        }
+        return render(request,'rftest/rftest_result.html',context)
+    else:
+        #fragen=RichtigOderFalsch.objects.all()
+        kurs=Kurs.objects.filter(id = arg1)
+        for k in kurs:
+           kursname=k.name
+           kursbeschreibung=k.beschreibung
+        print(kursname)
+        print(kursbeschreibung)
+        rffragen=RichtigOderFalsch.objects.filter(kurs = arg1)
+        context = {
+            'rffragen':rffragen,
+            'kursname':kursname,
+			'kursbeschreibung':kursbeschreibung
+        }
+        return render(request,'rftest/rftest_start.html',context)

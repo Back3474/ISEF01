@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>RF-Frage Details</h2>
+    <p>Name: {{ richtigoderfalsch.name }}</p>
+	<p>Kurs: {{ richtigoderfalsch.kurs }}</p>
+	<p>Behauptung wahr?: {{ richtigoderfalsch.behauptungrichtig }}</p>
+
+    <a class="btn btn-secondary btn-sm" href="{% url 'richtigoderfalsch_start' %}">Zurück</a>
+    <a class="btn btn-danger btn-sm" href="{% url 'richtigoderfalsch_delete' richtigoderfalsch.pk %}">Löschen</a>
+    <a class="btn btn-success btn-sm" href="{% url 'richtigoderfalsch_update' richtigoderfalsch.pk %}">Bearbeiten</a>
+{% endblock content %}

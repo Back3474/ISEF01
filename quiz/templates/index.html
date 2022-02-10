@@ -6,7 +6,9 @@
   <p>Die Quiz App verfügt aktuell über die folgenden Einträge:</p>
   <ul>
     <li><strong>Kurse:</strong> {{ num_kurs }}</li>
-    <li><strong>Fragen:</strong> {{ num_frage }}</li>
+    <li><strong>MC-Fragen:</strong> {{ num_mcfrage }}</li>
+	<li><strong>RF-Fragen:</strong> {{ num_rffrage }}</li>
   </ul>
- <a class="btn btn-success btn-sm" href="{% url 'mctest_select' %}">Starte Test</a>
+ <a class="btn btn-success btn-sm" href="{% url 'mctest_select' %}">Starte MC-Test</a>
+ <a class="btn btn-success btn-sm" href="{% url 'rftest_select' %}">Starte RF-Test</a>
 {% endblock %}
