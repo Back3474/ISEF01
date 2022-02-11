@@ -14,6 +14,8 @@ from .models import Kurs, Frage, RichtigOderFalsch, Ergebnis
 from .forms import TestSelectForm
 from .forms import ParaTestForm
 
+import random
+
 from urlparams.redirect import param_redirect #???
 #from django.http import HttpResponse
 #from django.http import HttpResponseRedirect
@@ -266,9 +268,9 @@ def ParaTest(request, arg1): #, arg2
 
 def str2bool(v):
   return v.lower() in ("on") 
- 
+
 @login_required(login_url='/accounts/login/')	  
-def MCTestStart(request, arg1, arg2):
+def MCTestStartOld(request, arg1, arg2):
     if request.method == 'POST':
         print(request.POST)
         #fragen=Frage.objects.all()
@@ -350,10 +352,101 @@ def MCTestStart(request, arg1, arg2):
             'kursname':kursname,
 			'kursbeschreibung':kursbeschreibung
         }
+        return render(request,'mctest/mctest_start.html',context)  
+
+@login_required(login_url='/accounts/login/')	  
+def MCTestStart(request, arg1, arg2):
+    kurs=Kurs.objects.filter(id = arg1)
+    for k in kurs:
+        kursname=k.name
+        kursbeschreibung=k.beschreibung
+    print(kurs)
+    print(kursbeschreibung)
+    qcount=int(arg2)
+    global mcfragenrandom
+	
+    if request.method == 'POST':
+        print(request.POST)
+        #fragen=Frage.objects.all()
+
+        mcfragen=mcfragenrandom
+        mcfragenanzahl=len(mcfragen)
+		
+        punkte=0
+        falsch=0
+        korrekt=0
+        total=0
+		
+        for f in mcfragen:
+            total+=1
+            answers=(request.POST.getlist(f.name))
+            answercount=len(answers)
+            boolantwort1=bool(False)
+            boolantwort2=bool(False)
+            boolantwort3=bool(False)
+            boolantwort4=bool(False)
+
+            if '1' in str(answers):
+                boolantwort1=bool(True)
+            if '2' in str(answers):
+                boolantwort2=bool(True)
+            if '3' in str(answers):
+                boolantwort3=bool(True)
+            if '4' in str(answers):
+                boolantwort4=bool(True)
+            print(boolantwort1)
+            print(boolantwort2)
+            print(boolantwort3)
+            print(boolantwort4)
+
+            print("Richige Antwort")
+            print(f.antwort1richtig)
+            print(f.antwort2richtig)
+            print(f.antwort3richtig)
+            print(f.antwort4richtig)
+            print()
+
+#
+
+            if bool(boolantwort1) is bool(f.antwort1richtig) and bool(boolantwort2) is bool(f.antwort2richtig) and bool(boolantwort3) is bool(f.antwort3richtig) and bool(boolantwort4) is bool(f.antwort4richtig):
+                punkte+=1
+                korrekt+=1
+            else:
+                falsch+=1
+
+        punkte=korrekt*1
+        prozent = punkte/(total*1) *100
+        context = {
+            'punkte':punkte,
+            'mcfragenanzahl':mcfragenanzahl,
+            'time': request.POST.get('timer'),
+            'korrekt':korrekt,
+            'falsch':falsch,
+            'prozent':prozent,
+            'total':total
+        }
+        reg = Ergebnis(testmodus='mc', benutzername=request.user.username, kursid=arg1, kursname=kursname, zeitsekunden=request.POST.get('timer'), datum=['%d-%m-%Y'], punkte=punkte, fragentotal=mcfragenanzahl, fragenkorrekt=korrekt, fragenfalsch=falsch )
+        reg.save()
+        return render(request,'mctest/mctest_result.html',context)
+    else:
+        #fragen=Frage.objects.all()
+        print(arg1)
+        print(arg2)
+		
+        mcfragen=Frage.objects.filter(kurs = arg1) #[:qcount]
+        randompool= list(mcfragen)
+        random.shuffle(randompool)
+        mcfragenrandom=randompool[:qcount]
+        mcfragenanzahl=len(mcfragenrandom)
+        context = {
+            'mcfragen':mcfragenrandom,
+            'kursname':kursname,
+			'kursbeschreibung':kursbeschreibung
+        }
         return render(request,'mctest/mctest_start.html',context)
 		
 @login_required(login_url='/accounts/login/')	  
-def RFTestStart(request, arg1, arg2):
+def RFTestStartOld(request, arg1, arg2):
     if request.method == 'POST':
         print(request.POST)
         #fragen=RichtigOderFalsch.objects.all()
@@ -364,7 +457,10 @@ def RFTestStart(request, arg1, arg2):
         print(kurs)
         qcount=int(arg2)
         rffragen=RichtigOderFalsch.objects.filter(kurs = arg1)[:qcount]
+
+        #rffragen=RichtigOderFalsch.objects.filter(kurs = arg1)[:qcount]
         rffragenanzahl=len(rffragen)
+
         punkte=0
         falsch=0
         korrekt=0
@@ -419,8 +515,92 @@ def RFTestStart(request, arg1, arg2):
         print(kursbeschreibung)
         qcount=int(arg2)
         rffragen=RichtigOderFalsch.objects.filter(kurs = arg1)[:qcount]
+        #randompool= list(rffragen)
+        #random.shuffle(randompool)
+        #rffragenrandom=randompool[:qcount]
+        rffragenanzahl=len(rffragen)
+        #rffragen=RichtigOderFalsch.objects.filter(kurs = arg1)[:qcount]
         context = {
             'rffragen':rffragen,
+            'kursname':kursname,
+			'kursbeschreibung':kursbeschreibung
+        }
+        return render(request,'rftest/rftest_start.html',context)
+		
+		
+@login_required(login_url='/accounts/login/')	  
+def RFTestStart(request, arg1, arg2):
+    kurs=Kurs.objects.filter(id = arg1)
+    for k in kurs:
+        kursname=k.name
+        kursbeschreibung=k.beschreibung
+    print(kurs)
+    print(kursbeschreibung)
+    qcount=int(arg2)
+    global rffragenrandom
+
+    if request.method == 'POST':
+        print(request.POST)
+
+        rffragen=rffragenrandom
+        rffragenanzahl=len(rffragen)
+
+        punkte=0
+        falsch=0
+        korrekt=0
+        total=0
+
+        for rf in rffragen:
+            total+=1
+            #answers=(request.POST.getlist(rf.name))
+            answers=request.POST.get(rf.name)
+            boolantwort=bool(False)
+
+            if '1' in str(answers):
+                boolantwort=bool(True)
+            if '2' in str(answers):
+                boolantwort=bool(False)
+            print(boolantwort)
+
+            print("Richige Antwort")
+            print(rf.behauptungrichtig)
+
+
+#
+
+            if bool(boolantwort) is bool(rf.behauptungrichtig):
+                punkte+=1
+                korrekt+=1
+            else:
+                falsch+=1
+
+        punkte=korrekt*1
+        prozent = punkte/(total*1) *100
+        context = {
+            'punkte':punkte,
+            'rffragenanzahl':rffragenanzahl,
+            'time': request.POST.get('timer'),
+            'korrekt':korrekt,
+            'falsch':falsch,
+            'prozent':prozent,
+            'total':total
+        }
+        reg = Ergebnis(testmodus='rf', benutzername=request.user.username, kursid=arg1, kursname=kursname, zeitsekunden=request.POST.get('timer'), datum=['%d-%m-%Y'], punkte=punkte, fragentotal=rffragenanzahl, fragenkorrekt=korrekt, fragenfalsch=falsch )
+        reg.save()
+        return render(request,'rftest/rftest_result.html',context)
+    else:
+        #fragen=RichtigOderFalsch.objects.all()
+        print(arg1)
+        print(arg2)		
+
+        rffragen=RichtigOderFalsch.objects.filter(kurs = arg1) #[:qcount]
+        randompool= list(rffragen)
+        random.shuffle(randompool)
+        rffragenrandom=randompool[:qcount]
+        rffragenanzahl=len(rffragenrandom)
+		
+        context = {
+			'rffragen':rffragenrandom,
             'kursname':kursname,
 			'kursbeschreibung':kursbeschreibung
         }

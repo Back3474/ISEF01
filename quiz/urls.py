@@ -25,7 +25,9 @@ from .views import MCTestSelect
 from .views import RFTestSelect
 from .views import TestStart
 from .views import MCTestStart
+from .views import MCTestStartOld
 from .views import RFTestStart
+from .views import RFTestStartOld
 from .views import ParaTest
 
 urlpatterns = [
