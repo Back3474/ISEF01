@@ -117,6 +117,30 @@ class RichtigOderFalschDelete(AuthDeleteView):
 class ErgebnisHome(AuthListView): 
     model = Ergebnis
     template_name = 'ergebnis/ergebnis_home.html'
+	
+class ErgebnisTopPunkte(AuthListView): 
+    model = Ergebnis
+    template_name = 'ergebnis/ergebnis_toppunkte.html'
+    fields = '__all__'
+
+    def get_queryset(self):
+        return Ergebnis.objects.filter().order_by('-punkte')[:10]
+
+class ErgebnisMCTopPunkte(AuthListView): 
+    model = Ergebnis
+    template_name = 'ergebnis/ergebnis_mctoppunkte.html'
+    fields = '__all__'
+
+    def get_queryset(self):
+        return Ergebnis.objects.filter(testmodus='mc').order_by('-punkte')[:10]
+
+class ErgebnisRFTopPunkte(AuthListView): 
+    model = Ergebnis
+    template_name = 'ergebnis/ergebnis_rftoppunkte.html'
+    fields = '__all__'
+
+    def get_queryset(self):
+        return Ergebnis.objects.filter(testmodus='rf').order_by('-punkte')[:10]
 
 class ErgebnisDetail(AuthDetailView):
     model = Ergebnis

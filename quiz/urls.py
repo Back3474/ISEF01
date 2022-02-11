@@ -16,6 +16,9 @@ from .views import RichtigOderFalschDetail
 from .views import RichtigOderFalschUpdate
 from .views import RichtigOderFalschDelete
 from .views import ErgebnisHome
+from .views import ErgebnisTopPunkte
+from .views import ErgebnisMCTopPunkte
+from .views import ErgebnisRFTopPunkte
 from .views import ErgebnisDetail
 from .views import index
 from .views import MCTestSelect
@@ -31,7 +34,10 @@ urlpatterns = [
      path('kurs', KursHome.as_view(), name='kurs_start'),
 	 path('frage', FrageHome.as_view(), name='frage_start'),
      path('richtigoderfalsch', RichtigOderFalschHome.as_view(), name='richtigoderfalsch_start'),
-     path('ergebnis', ErgebnisHome.as_view(), name='ergebnis_start'),   	 
+     path('ergebnis', ErgebnisHome.as_view(), name='ergebnis_start'),
+     path('ergebnistoppunkte', ErgebnisTopPunkte.as_view(), name='ergebnis_toppunkte'), 
+     path('ergebnismctoppunkte', ErgebnisMCTopPunkte.as_view(), name='ergebnis_mctoppunkte'),
+     path('ergebnisrftoppunkte', ErgebnisRFTopPunkte.as_view(), name='ergebnis_rftoppunkte'),    		 
 	 path('mctest', MCTestSelect, name='mctest_select'),
      path('rftest', RFTestSelect, name='rftest_select'),
 	 path('mctest/<arg1>', MCTestStart, name='mctest_start'),

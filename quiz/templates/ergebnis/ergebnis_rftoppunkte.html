@@ -1,9 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-	<p><a href="{% url 'ergebnis_toppunkte' %}"> Ergebnis ALL Top Punkte</a></p>
-	<p><a href="{% url 'ergebnis_mctoppunkte' %}"> Ergebnis MC Top Punkte</a></p>
-	<p><a href="{% url 'ergebnis_rftoppunkte' %}"> Ergebnis RF Top Punkte</a></p>
 <h2>Alle Egebnisse</h2>
 <ul>
     {% for ergebnis in object_list %}
