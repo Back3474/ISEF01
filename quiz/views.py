@@ -162,13 +162,17 @@ def MCTestSelect(request):
        #form.save()
        #return HttpResponseRedirect('/index.html')
         data = form.cleaned_data.get("kurs")
+        questioncount = form.cleaned_data.get("questioncount")
         print(data.id)
         print(data.name)
+        print(questioncount)
         context = {
             'modulid':data.id,
-            'modulname':data.name
+            'modulname':data.name,
+            'questioncount':questioncount
         }
-        return param_redirect(request, 'mctest_start', data.id) #, data.id, data.name)
+        return param_redirect(request, 'mctest_start', data.id, questioncount) #, data.id, data.name)
+        #return render(request,'mctest/mctest_start.html',context)
 	  
   else:
       form = TestSelectForm()
@@ -182,13 +186,16 @@ def RFTestSelect(request):
        #form.save()
        #return HttpResponseRedirect('/index.html')
         data = form.cleaned_data.get("kurs")
+        questioncount = form.cleaned_data.get("questioncount")
         print(data.id)
         print(data.name)
+        print(questioncount)
         context = {
             'modulid':data.id,
-            'modulname':data.name
+            'modulname':data.name,
+            'questioncount':questioncount
         }
-        return param_redirect(request, 'rftest_start', data.id) #, data.id, data.name)
+        return param_redirect(request, 'rftest_start', data.id, questioncount) #, data.id, data.name)
 	  
   else:
       form = TestSelectForm()
@@ -237,7 +244,7 @@ def str2bool(v):
   return v.lower() in ("on") 
  
 @login_required(login_url='/accounts/login/')	  
-def MCTestStart(request, arg1):
+def MCTestStart(request, arg1, arg2):
     if request.method == 'POST':
         print(request.POST)
         #fragen=Frage.objects.all()
@@ -246,7 +253,8 @@ def MCTestStart(request, arg1):
            kursname=k.name
            kursbeschreibung=k.beschreibung
         print(kurs)
-        fragen=Frage.objects.filter(kurs = arg1)
+        qcount=int(arg2)
+        fragen=Frage.objects.filter(kurs = arg1)[:qcount]
         fragenanzahl=len(fragen)
         punkte=0
         falsch=0
@@ -284,10 +292,6 @@ def MCTestStart(request, arg1):
 #
 
             if bool(boolantwort1) is bool(f.antwort1richtig) and bool(boolantwort2) is bool(f.antwort2richtig) and bool(boolantwort3) is bool(f.antwort3richtig) and bool(boolantwort4) is bool(f.antwort4richtig):
-            #if bool(boolantwort1) == bool(f.antwort1richtig) and bool(boolantwort2) == bool(f.antwort2richtig) and bool(boolantwort3) == bool(f.antwort3richtig) and bool(boolantwort4) == bool(f.antwort4richtig):
-            #if boolantwort1 == bool(f.antwort1richtig) and boolantwort2 == bool(f.antwort2richtig) and boolantwort3 == bool(f.antwort3richtig) and boolantwort4 == bool(f.antwort4richtig):
-            #if bool(f.antwort1richtig) is boolantwort1 and bool(f.antwort2richtig) is boolantwort2 and bool(f.antwort3richtig) is boolantwort3 and bool(f.antwort4richtig) is boolantwort4:
-            #if boolantwort1 == f.antwort1richtig and boolantwort2 == f.antwort2richtig and boolantwort3 == f.antwort3richtig and boolantwort4 == f.antwort4richtig:
                 punkte+=1
                 korrekt+=1
             else:
@@ -315,7 +319,8 @@ def MCTestStart(request, arg1):
            kursbeschreibung=k.beschreibung
         print(kursname)
         print(kursbeschreibung)
-        fragen=Frage.objects.filter(kurs = arg1)
+        qcount=int(arg2)
+        fragen=Frage.objects.filter(kurs = arg1)[:qcount]
         context = {
             'fragen':fragen,
             'kursname':kursname,
@@ -324,7 +329,7 @@ def MCTestStart(request, arg1):
         return render(request,'mctest/mctest_start.html',context)
 		
 @login_required(login_url='/accounts/login/')	  
-def RFTestStart(request, arg1):
+def RFTestStart(request, arg1, arg2):
     if request.method == 'POST':
         print(request.POST)
         #fragen=RichtigOderFalsch.objects.all()
@@ -333,7 +338,8 @@ def RFTestStart(request, arg1):
            kursname=k.name
            kursbeschreibung=k.beschreibung
         print(kurs)
-        rffragen=RichtigOderFalsch.objects.filter(kurs = arg1)
+        qcount=int(arg2)
+        rffragen=RichtigOderFalsch.objects.filter(kurs = arg1)[:qcount]
         rffragenanzahl=len(rffragen)
         punkte=0
         falsch=0
@@ -379,13 +385,16 @@ def RFTestStart(request, arg1):
         return render(request,'rftest/rftest_result.html',context)
     else:
         #fragen=RichtigOderFalsch.objects.all()
+        print(arg1)
+        print(arg2)		
         kurs=Kurs.objects.filter(id = arg1)
         for k in kurs:
            kursname=k.name
            kursbeschreibung=k.beschreibung
         print(kursname)
         print(kursbeschreibung)
-        rffragen=RichtigOderFalsch.objects.filter(kurs = arg1)
+        qcount=int(arg2)
+        rffragen=RichtigOderFalsch.objects.filter(kurs = arg1)[:qcount]
         context = {
             'rffragen':rffragen,
             'kursname':kursname,
