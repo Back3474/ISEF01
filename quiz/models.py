@@ -34,7 +34,7 @@ class Frage(models.Model):
 class RichtigOderFalsch(models.Model):
     name = models.CharField(max_length=255,blank=False,help_text='Geben Sie hier die Frage ein')
     kurs = models.ForeignKey(Kurs,null=True,blank=False,on_delete=models.CASCADE,help_text='Wählen Sie den Kurs, welchem die Frage zugewiesen wird')
-    behauptungrichtig = models.BooleanField(default=False,help_text='Ist diese Behauptung wahr?',verbose_name="Behauptung wahr?")
+    behauptungrichtig = models.BooleanField(default=False,verbose_name="Behauptung wahr?")
 	
     def __str__(self):
         return self.name
