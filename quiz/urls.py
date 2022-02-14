@@ -25,10 +25,7 @@ from .views import MCTestSelect
 from .views import RFTestSelect
 from .views import TestStart
 from .views import MCTestStart
-from .views import MCTestStartOld
 from .views import RFTestStart
-from .views import RFTestStartOld
-from .views import ParaTest
 
 urlpatterns = [
      #path('', KursHome.as_view(), name='kurs_start'),
@@ -46,9 +43,6 @@ urlpatterns = [
 	 path('mctest/<arg1>/<arg2>', MCTestStart, name='mctest_start'),
      path('rftest/<arg1>', RFTestStart, name='rftest_start'),
      path('rftest/<arg1>/<arg2>', RFTestStart, name='rftest_start'),
-	 path('paratest', ParaTest, name='para_test'),
-	 path('paratest/<arg1>-<arg2>', ParaTest, name='para_test'),
-	 path('paratest/<arg1>', ParaTest, name='para_test'),
 	 path('kurs/neu/', KursCreate.as_view(), name='neuer_kurs'),
 	 path('frage/neu/', FrageCreate.as_view(), name='neue_frage'),
      path('richtigoderfalsch/neu/', RichtigOderFalschCreate.as_view(), name='richtigoderfalsch_neue_frage'),
