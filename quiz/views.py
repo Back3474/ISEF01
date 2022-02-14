@@ -121,6 +121,10 @@ class RichtigOderFalschDelete(AuthDeleteView):
 class ErgebnisHome(AuthListView): 
     model = Ergebnis
     template_name = 'ergebnis/ergebnis_home.html'
+
+class ErgebnisDetail(AuthListView): 
+    model = Ergebnis
+    template_name = 'ergebnis/ergebnis_detail.html'
 	
 class ErgebnisTopPunkte(AuthListView): 
     model = Ergebnis
@@ -129,6 +133,30 @@ class ErgebnisTopPunkte(AuthListView):
 
     def get_queryset(self):
         return Ergebnis.objects.filter().order_by('-punkte')[:10]
+		
+class ErgebnisTopGroupByPunkte(AuthListView): 
+    model = Ergebnis
+    template_name = 'ergebnis/ergebnis_topgroupbypunkte.html'
+    fields = '__all__'
+
+    def get_queryset(self):
+        return Ergebnis.objects.raw('select id, benutzername, punkte from quiz_ergebnis group by benutzername order by punkte DESC')
+
+class ErgebnisTopMCGroupByPunkte(AuthListView): 
+    model = Ergebnis
+    template_name = 'ergebnis/ergebnis_topmcgroupbypunkte.html'
+    fields = '__all__'
+
+    def get_queryset(self):
+        return Ergebnis.objects.raw('select id, benutzername, punkte from quiz_ergebnis where testmodus="mc" group by benutzername order by punkte DESC') 
+		
+class ErgebnisTopRFGroupByPunkte(AuthListView): 
+    model = Ergebnis
+    template_name = 'ergebnis/ergebnis_toprfgroupbypunkte.html'
+    fields = '__all__'
+
+    def get_queryset(self):
+        return Ergebnis.objects.raw('select id, benutzername, punkte from quiz_ergebnis where testmodus="rf" group by benutzername order by punkte DESC')
 
 class ErgebnisMCTopPunkte(AuthListView): 
     model = Ergebnis
