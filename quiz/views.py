@@ -18,7 +18,7 @@ import random
 from django.db.models import Count
 from django.db.models import Sum
 
-from urlparams.redirect import param_redirect #???
+from urlparams.redirect import param_redirect #
 #from django.http import HttpResponse
 #from django.http import HttpResponseRedirect
 #from django.urls import reverse
@@ -182,7 +182,6 @@ class ErgebnisDetail(AuthDetailView):
 def index(request):
     """View function for home page of site."""
 
-    # Generate counts of some of the main objects
     num_kurs = Kurs.objects.all().count()
     num_mcfrage = Frage.objects.all().count()
     num_rffrage = RichtigOderFalsch.objects.all().count()
@@ -194,21 +193,7 @@ def index(request):
         'num_rffrage': num_rffrage
     }
 
-    # Render the HTML template index.html with the data in the context variable
     return render(request, 'index.html', context=context)
-
-#@login_required(login_url='/accounts/login/')
-#def test_select(request):
-#
-#    kurs_select = Kurs.objects.all()
-#
-#
-#    context = {
-#        'kurs_select': kurs_select,
-#    }
-#
-#    return render(request, 'mctest/mctest_select.html', context=context)
-
 
 @login_required(login_url='/accounts/login/')	
 def MCTestSelect(request):
@@ -219,15 +204,20 @@ def MCTestSelect(request):
        #return HttpResponseRedirect('/index.html')
         data = form.cleaned_data.get("kurs")
         questioncount = form.cleaned_data.get("questioncount")
+        mcfragenanzahlkurs=Frage.objects.filter(kurs = data.id).count()
         print(data.id)
         print(data.name)
         print(questioncount)
+        print(mcfragenanzahlkurs)
         context = {
             'modulid':data.id,
             'modulname':data.name,
             'questioncount':questioncount
         }
-        return param_redirect(request, 'mctest_start', data.id, questioncount) #, data.id, data.name)
+        if mcfragenanzahlkurs < 1:
+           print("keine Fragen verfügbar für",data.name)
+        else:
+           return param_redirect(request, 'mctest_start', data.id, questioncount) #, data.id, data.name)
         #return render(request,'mctest/mctest_start.html',context)
 	  
   else:
@@ -243,15 +233,20 @@ def RFTestSelect(request):
        #return HttpResponseRedirect('/index.html')
         data = form.cleaned_data.get("kurs")
         questioncount = form.cleaned_data.get("questioncount")
+        rffragenanzahlkurs=RichtigOderFalsch.objects.filter(kurs = data.id).count()
         print(data.id)
         print(data.name)
         print(questioncount)
+        print(rffragenanzahlkurs)
         context = {
             'modulid':data.id,
             'modulname':data.name,
             'questioncount':questioncount
         }
-        return param_redirect(request, 'rftest_start', data.id, questioncount) #, data.id, data.name)
+        if rffragenanzahlkurs < 1:
+           print("keine Fragen verfügbar für",data.name)
+        else:
+           return param_redirect(request, 'rftest_start', data.id, questioncount) #, data.id, data.name)
 	  
   else:
       form = TestSelectForm()
@@ -433,7 +428,6 @@ def RFTestStart(request, arg1, arg2):
         reg.save()
         return render(request,'rftest/rftest_result.html',context)
     else:
-        #fragen=RichtigOderFalsch.objects.all()
         print(arg1)
         print(arg2)		
 
