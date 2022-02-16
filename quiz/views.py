@@ -19,6 +19,8 @@ from django.db.models import Count
 from django.db.models import Sum
 
 from urlparams.redirect import param_redirect #
+#from django.core.exceptions import ValidationError
+from django.contrib import messages
 #from django.http import HttpResponse
 #from django.http import HttpResponseRedirect
 #from django.urls import reverse
@@ -216,6 +218,9 @@ def MCTestSelect(request):
         }
         if mcfragenanzahlkurs < 1:
            print("keine Fragen verfügbar für",data.name)
+           messages.error(request, 'Es sind keine Fragen für %s verfügbar'%data.name)
+           messages.error(request, form.errors)
+           #form.add_error(ValidationError('You don\'t have access to this page'))
         else:
            return param_redirect(request, 'mctest_start', data.id, questioncount) #, data.id, data.name)
         #return render(request,'mctest/mctest_start.html',context)
@@ -245,6 +250,8 @@ def RFTestSelect(request):
         }
         if rffragenanzahlkurs < 1:
            print("keine Fragen verfügbar für",data.name)
+           messages.error(request, 'Es sind keine Fragen für %s verfügbar'%data.name)
+           messages.error(request, form.errors)
         else:
            return param_redirect(request, 'rftest_start', data.id, questioncount) #, data.id, data.name)
 	  
