@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% include 'messages.html' %}
 <h2>Kurs bearbeiten</h2>
 <form action="" method="post">{% csrf_token %}
     {{ form.as_p }}

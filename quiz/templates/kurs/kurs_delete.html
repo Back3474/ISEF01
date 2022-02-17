@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% include 'messages.html' %}
 <h2>Kurs löschen</h2>
 <form action="" method="post">{% csrf_token %}
     <p>Bist du sicher das du diesen Kurs löschen willst?</p>

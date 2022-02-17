@@ -8,7 +8,10 @@ from django.views.generic import UpdateView
 from django.views.generic import DeleteView
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.mixins import AccessMixin
 
 from .models import Kurs, Frage, RichtigOderFalsch, Ergebnis
 from .forms import TestSelectForm
@@ -24,114 +27,142 @@ from django.contrib import messages
 #from django.http import HttpResponse
 #from django.http import HttpResponseRedirect
 #from django.urls import reverse
-#from django.shortcuts import redirect
+from django.shortcuts import redirect
 
 # Create your views here.
 
-class AuthListView(LoginRequiredMixin, ListView):
+class AuthListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     login_url = '/accounts/login/'
     redirect_field_name = 'redirect_to'
+    #raise_exception = True
+    permission_denied_message = 'Keine Berechtigung'
 
-class AuthDetailView(LoginRequiredMixin, DetailView):
+class AuthDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     login_url = '/accounts/login/'
     redirect_field_name = 'redirect_to'
+    #raise_exception = True
+    permission_denied_message = 'Keine Berechtigung'
 
-class AuthCreateView(LoginRequiredMixin, CreateView):
+class AuthCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     login_url = '/accounts/login/'
     redirect_field_name = 'redirect_to'
+    #raise_exception = True
+    permission_denied_message = 'Keine Berechtigung'
 	
-class AuthUpdateView(LoginRequiredMixin, UpdateView):
+class AuthUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     login_url = '/accounts/login/'
     redirect_field_name = 'redirect_to'
+    #raise_exception = True
+    permission_denied_message = 'Keine Berechtigung'
 
-class AuthDeleteView(LoginRequiredMixin, DeleteView):
+class AuthDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     login_url = '/accounts/login/'
     redirect_field_name = 'redirect_to'
+    #raise_exception = True
+    permission_denied_message = 'Keine Berechtigung'
 
 class KursHome(AuthListView): 
     model = Kurs
     template_name = 'kurs/kurs_home.html'
+    permission_required = ('quiz.view_kurs')
 
 class KursCreate(AuthCreateView):
     model = Kurs
     template_name = 'kurs/kurs_create.html'
     fields = '__all__'
     success_url = reverse_lazy('kurs_start')
-	
+    permission_required = ('quiz.add_kurs')
+
 class KursDetail(AuthDetailView):
     model = Kurs
     template_name = 'kurs/kurs_detail.html'
+    permission_required = ('quiz.view_kurs')
 
 class KursUpdate(AuthUpdateView):
     model = Kurs
     template_name = 'kurs/kurs_update.html'
     fields = '__all__'
-	
+    permission_required = ('quiz.change_kurs')
+   	
 class KursDelete(AuthDeleteView):
     model = Kurs
     template_name = 'kurs/kurs_delete.html'
     success_url = reverse_lazy('kurs_start')
+    permission_required = ('quiz.delete_kurs')
 	
 class FrageHome(AuthListView): 
     model = Frage
     template_name = 'frage/frage_home.html'
+    permission_required = ('quiz.view_frage')
 	
 class FrageCreate(AuthCreateView):
     model = Frage
     template_name = 'frage/frage_create.html'
     fields = '__all__'
     success_url = reverse_lazy('frage_start')
+    permission_required = ('quiz.add_frage')
 	
 class FrageDetail(AuthDetailView):
     model = Frage
     template_name = 'frage/frage_detail.html'
+    permission_required = ('quiz.view_frage')
 
 class FrageUpdate(AuthUpdateView):
     model = Frage
     template_name = 'frage/frage_update.html'
     fields = '__all__'
+    permission_required = ('quiz.change_frage')
 	
 class FrageDelete(AuthDeleteView):
     model = Frage
     template_name = 'frage/frage_delete.html'
     success_url = reverse_lazy('frage_start')
+    permission_required = ('quiz.delete_frage')
 	
 class RichtigOderFalschHome(AuthListView): 
     model = RichtigOderFalsch
     template_name = 'richtigoderfalsch/richtigoderfalsch_home.html'
+    permission_required = ('quiz.view_richtigoderfalsch')
 	
 class RichtigOderFalschCreate(AuthCreateView):
     model = RichtigOderFalsch
     template_name = 'richtigoderfalsch/richtigoderfalsch_create.html'
     fields = '__all__'
     success_url = reverse_lazy('richtigoderfalsch_start')
+    permission_required = ('quiz.add_richtigoderfalsch')
 	
 class RichtigOderFalschDetail(AuthDetailView):
     model = RichtigOderFalsch
     template_name = 'richtigoderfalsch/richtigoderfalsch_detail.html'
+    permission_required = ('quiz.view_richtigoderfalsch')
 
 class RichtigOderFalschUpdate(AuthUpdateView):
     model = RichtigOderFalsch
     template_name = 'richtigoderfalsch/richtigoderfalsch_update.html'
     fields = '__all__'
+    permission_required = ('quiz.change_richtigoderfalsch')
 	
 class RichtigOderFalschDelete(AuthDeleteView):
     model = RichtigOderFalsch
     template_name = 'richtigoderfalsch/richtigoderfalsch_delete.html'
     success_url = reverse_lazy('richtigoderfalsch_start')
+    permission_required = ('quiz.delete_richtigoderfalsch')
 	
 class ErgebnisHome(AuthListView): 
     model = Ergebnis
     template_name = 'ergebnis/ergebnis_home.html'
+    permission_required = ('quiz.view_ergebnis')
 
 class ErgebnisDetail(AuthListView): 
     model = Ergebnis
     template_name = 'ergebnis/ergebnis_detail.html'
+    permission_required = ('quiz.view_ergebnis')
 	
 class ErgebnisTopPunkte(AuthListView): 
     model = Ergebnis
     template_name = 'ergebnis/ergebnis_toppunkte.html'
     fields = '__all__'
+    permission_required = ('quiz.view_ergebnis')
 
     def get_queryset(self):
         return Ergebnis.objects.filter().order_by('-punkte')[:10]
@@ -140,6 +171,7 @@ class ErgebnisTopGroupByPunkte(AuthListView):
     model = Ergebnis
     template_name = 'ergebnis/ergebnis_topgroupbypunkte.html'
     fields = '__all__'
+    permission_required = ('quiz.view_ergebnis')
 
     def get_queryset(self):
         return Ergebnis.objects.raw('select id, benutzername, punkte from quiz_ergebnis group by benutzername order by punkte DESC')
@@ -148,6 +180,7 @@ class ErgebnisTopMCGroupByPunkte(AuthListView):
     model = Ergebnis
     template_name = 'ergebnis/ergebnis_topmcgroupbypunkte.html'
     fields = '__all__'
+    permission_required = ('quiz.view_ergebnis')
 
     def get_queryset(self):
         return Ergebnis.objects.raw('select id, benutzername, punkte from quiz_ergebnis where testmodus="mc" group by benutzername order by punkte DESC') 
@@ -156,6 +189,7 @@ class ErgebnisTopRFGroupByPunkte(AuthListView):
     model = Ergebnis
     template_name = 'ergebnis/ergebnis_toprfgroupbypunkte.html'
     fields = '__all__'
+    permission_required = ('quiz.view_ergebnis')
 
     def get_queryset(self):
         return Ergebnis.objects.raw('select id, benutzername, punkte from quiz_ergebnis where testmodus="rf" group by benutzername order by punkte DESC')
@@ -164,6 +198,7 @@ class ErgebnisMCTopPunkte(AuthListView):
     model = Ergebnis
     template_name = 'ergebnis/ergebnis_mctoppunkte.html'
     fields = '__all__'
+    permission_required = ('quiz.view_ergebnis')
 
     def get_queryset(self):
         return Ergebnis.objects.filter(testmodus='mc').order_by('-punkte')[:10]
@@ -172,6 +207,7 @@ class ErgebnisRFTopPunkte(AuthListView):
     model = Ergebnis
     template_name = 'ergebnis/ergebnis_rftoppunkte.html'
     fields = '__all__'
+    permission_required = ('quiz.view_ergebnis')
 
     def get_queryset(self):
         return Ergebnis.objects.filter(testmodus='rf').order_by('-punkte')[:10]
@@ -179,6 +215,7 @@ class ErgebnisRFTopPunkte(AuthListView):
 class ErgebnisDetail(AuthDetailView):
     model = Ergebnis
     template_name = 'ergebnis/ergebnis_detail.html'
+    permission_required = ('quiz.view_ergebnis')
 
 @login_required(login_url='/accounts/login/')
 def index(request):
