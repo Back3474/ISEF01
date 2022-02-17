@@ -1,5 +1,5 @@
 from django import forms
-from .models import Kurs, Frage
+from .models import Kurs
 
 COUNT_CHOICE= [
     ('1', '1'),
