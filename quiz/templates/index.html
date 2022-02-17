@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="text-center">
   <p>Willkommen in der Quiz App!</p>
   <h5>Dynamischer Datenbanksinhalt</h5>
   <p>Die Quiz App verfügt aktuell über die folgenden Einträge:</p>
@@ -11,4 +12,5 @@
   </ul>
  <a class="btn btn-success btn-sm" href="{% url 'mctest_select' %}">Starte MC-Test</a>
  <a class="btn btn-success btn-sm" href="{% url 'rftest_select' %}">Starte RF-Test</a>
+</div>
 {% endblock %}
