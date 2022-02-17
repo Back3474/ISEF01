@@ -1,17 +1,20 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Ergebnis Details</h2>
-    <p>TestModus: {{ ergebnis.testmodus }}</p>
-	<p>Benutzername: {{ ergebnis.benutzername }}</p>
-    <p>Punkte: {{ ergebnis.punkte }}</p>
-    <p>Kursid: {{ ergebnis.kursid }}</p>
-    <p>Kursname: {{ ergebnis.kursname }}</p>
-    <p>Zeit (Sekunden): {{ ergebnis.zeitsekunden }}</p>
-    <p>Datum: {{ ergebnis.datum }}</p>
-    <p>Fragen Total: {{ ergebnis.fragentotal }}</p>
-    <p>Fragen korrekt: {{ ergebnis.fragenkorrekt }}</p>
-    <p>Fragen falsch: {{ ergebnis.fragenfalsch }}</p>
-
+    <h2 class="text-center">Ergebnis Details</h2>
+<div width="100px" >
+    <table class="table table-sm table-striped" border="3px">
+        <tr><td>Testmodus:</td><td> {{ ergebnis.testmodus }}</td></tr>
+	    <tr><td>Benutzername:</td><td> {{ ergebnis.benutzername }}</td></tr>
+        <tr><td>Punkte:</td><td> {{ ergebnis.punkte }}</td></tr>
+        <tr><td>KursID:</td><td> {{ ergebnis.kursid }}</td></tr>
+        <tr><td>Kursname:</td><td> {{ ergebnis.kursname }}</td></tr>
+        <tr><td>Zeit (Sekunden):</td><td> {{ ergebnis.zeitsekunden }}</td></tr>
+        <tr><td>Datum:</td><td> {{ ergebnis.datum }}</td></tr>
+        <tr><td>Fragen Total:</td><td> {{ ergebnis.fragentotal }}</td></tr>
+        <tr><td>Fragen korrekt:</td><td> {{ ergebnis.fragenkorrekt }}</td></tr>
+        <tr><td>Fragen falsch:</td><td> {{ ergebnis.fragenfalsch }}</td></tr>
+    </table>
+</div>
     <a class="btn btn-secondary btn-sm" href="{% url 'ergebnis_start' %}">Zurück</a>
 {% endblock content %}

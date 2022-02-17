@@ -1,10 +1,24 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Alle Egebnisse</h2>
-<ul>
-    {% for ergebnis in object_list %}
-	<li><a href="{% url 'ergebnis_detail' ergebnis.pk %}">{{ ergebnis.testmodus }} - {{ ergebnis.benutzername }} - {{ ergebnis.punkte }}</a></li>
-    {% endfor %}
-</ul>
+<h2 class="text-center">Alle Egebnisse</h2>
+
+<table class ="table table-sm">
+	<thead class="table-info">
+		<th scope = "col">Testmodus</th>
+		<th scope = "col">Benutzername</th>
+		<th scope = "col">Punkte</th>
+	</thead>
+
+	<tbody>
+	{% for ergebnis in object_list %}
+		<tr>
+			<td> {{ ergebnis.testmodus }}</td>
+			<td> {{ ergebnis.benutzername }} </td>
+			<td> {{ ergebnis.punkte }}</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+
 {% endblock content %}
