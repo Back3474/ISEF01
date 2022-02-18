@@ -178,7 +178,7 @@ class ErgebnisTopGroupByPunkte(AuthListView):
     permission_required = ('quiz.view_ergebnis')
 
     def get_queryset(self):
-        return Ergebnis.objects.raw('select id, benutzername, punkte from quiz_ergebnis group by benutzername order by punkte DESC')
+        return Ergebnis.objects.raw('select id, benutzername, sum(punkte) as punkte from quiz_ergebnis group by benutzername order by punkte DESC')
 
 class ErgebnisTopMCGroupByPunkte(AuthListView): 
     model = Ergebnis
@@ -187,7 +187,7 @@ class ErgebnisTopMCGroupByPunkte(AuthListView):
     permission_required = ('quiz.view_ergebnis')
 
     def get_queryset(self):
-        return Ergebnis.objects.raw('select id, benutzername, punkte from quiz_ergebnis where testmodus="mc" group by benutzername order by punkte DESC') 
+        return Ergebnis.objects.raw('select id, benutzername, sum(punkte) as punkte from quiz_ergebnis where testmodus="mc" group by benutzername order by punkte DESC') 
 		
 class ErgebnisTopRFGroupByPunkte(AuthListView): 
     model = Ergebnis
@@ -196,7 +196,7 @@ class ErgebnisTopRFGroupByPunkte(AuthListView):
     permission_required = ('quiz.view_ergebnis')
 
     def get_queryset(self):
-        return Ergebnis.objects.raw('select id, benutzername, punkte from quiz_ergebnis where testmodus="rf" group by benutzername order by punkte DESC')
+        return Ergebnis.objects.raw('select id, benutzername, sum(punkte) as punkte from quiz_ergebnis where testmodus="rf" group by benutzername order by punkte DESC')
 
 class ErgebnisMCTopPunkte(AuthListView): 
     model = Ergebnis
