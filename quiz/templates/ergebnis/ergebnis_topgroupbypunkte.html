@@ -13,7 +13,6 @@
 	<tbody>
 	{% for ergebnis in object_list %}
 		<tr>
-			<td> <a href="{% url 'ergebnis_detail' ergebnis.pk %}">{{ ergebnis.testmodus }}</a> </td>
 			<td> <a href="{% url 'ergebnis_detail' ergebnis.pk %}">{{ ergebnis.benutzername }}</a> </td>
 			<td> <a href="{% url 'ergebnis_detail' ergebnis.pk %}">{{ ergebnis.punkte }}</a> </td>
 		</tr>
