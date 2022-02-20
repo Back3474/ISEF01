@@ -1,3 +1,14 @@
-<h1>403 Forbidden</h1>
-<p>{{ exception }}</p>
-<button type ="button" class="btn btn-danger "><a href="{% url 'index' %}">Zurück zur Index Seite</a></button>
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-md-center">
+		<div class="col-sm-4 ">
+            <h1>Keine Berechtigung</h1>
+            <p>Das ist verboten, das weiß ich ganz genau!</p>
+            <button type ="button" class="btn btn-danger " onclick="location.href='{% url 'index' %}'">Zurück zur Index Seite</button>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
