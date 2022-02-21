@@ -99,10 +99,19 @@ class FrageHome(AuthListView):
     template_name = 'frage/frage_home.html'
     permission_required = ('quiz.view_frage')
 	
+class FrageNichtFreigegeben(AuthListView): 
+    model = Frage
+    template_name = 'frage/frage_unapproved.html'
+    permission_required = ('quiz.view_frage')
+	
+    def get_queryset(self):
+        return Frage.objects.raw('select * from quiz_frage where freigegeben = False')
+	
 class FrageCreate(AuthCreateView):
     model = Frage
     template_name = 'frage/frage_create.html'
-    fields = '__all__'
+    #fields = '__all__'
+    fields = ['name','kurs','antwort1','antwort1richtig','antwort2','antwort2richtig','antwort3','antwort3richtig','antwort4','antwort4richtig']
     success_url = reverse_lazy('frage_start')
     permission_required = ('quiz.add_frage')
 	
@@ -128,10 +137,19 @@ class RichtigOderFalschHome(AuthListView):
     template_name = 'richtigoderfalsch/richtigoderfalsch_home.html'
     permission_required = ('quiz.view_richtigoderfalsch')
 	
+class RichtigOderFalschNichtFreigegeben(AuthListView): 
+    model = RichtigOderFalsch
+    template_name = 'richtigoderfalsch/richtigoderfalsch_unapproved.html'
+    permission_required = ('quiz.view_richtigoderfalsch')
+	
+    def get_queryset(self):
+        return Frage.objects.raw('select * from quiz_richtigoderfalsch where freigegeben = False')
+	
 class RichtigOderFalschCreate(AuthCreateView):
     model = RichtigOderFalsch
     template_name = 'richtigoderfalsch/richtigoderfalsch_create.html'
-    fields = '__all__'
+#    fields = '__all__'
+    fields = ['name','kurs','behauptungrichtig']
     success_url = reverse_lazy('richtigoderfalsch_start')
     permission_required = ('quiz.add_richtigoderfalsch')
 	
@@ -247,7 +265,7 @@ def MCTestSelect(request):
        #return HttpResponseRedirect('/index.html')
         data = form.cleaned_data.get("kurs")
         questioncount = form.cleaned_data.get("questioncount")
-        mcfragenanzahlkurs=Frage.objects.filter(kurs = data.id).count()
+        mcfragenanzahlkurs=Frage.objects.filter(kurs = data.id, freigegeben = True).count()
         print(data.id)
         print(data.name)
         print(questioncount)
@@ -279,7 +297,7 @@ def RFTestSelect(request):
        #return HttpResponseRedirect('/index.html')
         data = form.cleaned_data.get("kurs")
         questioncount = form.cleaned_data.get("questioncount")
-        rffragenanzahlkurs=RichtigOderFalsch.objects.filter(kurs = data.id).count()
+        rffragenanzahlkurs=RichtigOderFalsch.objects.filter(kurs = data.id, freigegeben = True).count()
         print(data.id)
         print(data.name)
         print(questioncount)
@@ -402,7 +420,7 @@ def MCTestStart(request, arg1, arg2):
         print(arg1)
         print(arg2)
 		
-        mcfragen=Frage.objects.filter(kurs = arg1) #[:qcount]
+        mcfragen=Frage.objects.filter(kurs = arg1, freigegeben = True) #[:qcount]
         randompool= list(mcfragen)
         random.shuffle(randompool)
         mcfragenrandom=randompool[:qcount]
@@ -479,7 +497,7 @@ def RFTestStart(request, arg1, arg2):
         print(arg1)
         print(arg2)		
 
-        rffragen=RichtigOderFalsch.objects.filter(kurs = arg1) #[:qcount]
+        rffragen=RichtigOderFalsch.objects.filter(kurs = arg1, freigegeben = True) #[:qcount]
         randompool= list(rffragen)
         random.shuffle(randompool)
         rffragenrandom=randompool[:qcount]

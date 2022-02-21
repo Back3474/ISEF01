@@ -24,6 +24,7 @@ class Frage(models.Model):
     antwort3richtig = models.BooleanField(default=False,help_text='Geben Sie an ob Antwort3 richtig ist',verbose_name="Antwort3 richtig?")
     antwort4 = models.CharField(max_length=255,blank=True,null=True,help_text='Geben Sie die Antwort4 der Frage ein (optional)')
     antwort4richtig = models.BooleanField(default=False,help_text='Geben Sie an ob Antwort4 richtig ist',verbose_name="Antwort4 richtig?")
+    freigegeben=models.BooleanField(default=False,help_text='Frage freigeben?',verbose_name="Frage freigeben")
 	
     def __str__(self):
         return self.name
@@ -35,6 +36,7 @@ class RichtigOderFalsch(models.Model):
     name = models.CharField(max_length=255,blank=False,help_text='Geben Sie hier die Frage ein')
     kurs = models.ForeignKey(Kurs,null=True,blank=False,on_delete=models.CASCADE,help_text='Wählen Sie den Kurs, welchem die Frage zugewiesen wird')
     behauptungrichtig = models.BooleanField(default=False,verbose_name="Behauptung wahr?")
+    freigegeben=models.BooleanField(default=False,help_text='Frage freigeben?',verbose_name="Frage freigeben")
 	
     def __str__(self):
         return self.name

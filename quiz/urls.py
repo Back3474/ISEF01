@@ -6,11 +6,13 @@ from .views import KursUpdate
 from .views import KursDelete
 
 from .views import FrageHome
+from .views import FrageNichtFreigegeben
 from .views import FrageCreate
 from .views import FrageDetail
 from .views import FrageUpdate
 from .views import FrageDelete
 from .views import RichtigOderFalschHome
+from .views import RichtigOderFalschNichtFreigegeben
 from .views import RichtigOderFalschCreate
 from .views import RichtigOderFalschDetail
 from .views import RichtigOderFalschUpdate
@@ -35,7 +37,9 @@ urlpatterns = [
 	 path('', index, name='index'),
      path('kurs', KursHome.as_view(), name='kurs_start'),
 	 path('frage', FrageHome.as_view(), name='frage_start'),
+	 path('frage/nichtfreigegeben', FrageNichtFreigegeben.as_view(), name='frage_nichtfreigegeben'),
      path('richtigoderfalsch', RichtigOderFalschHome.as_view(), name='richtigoderfalsch_start'),
+     path('richtigoderfalsch/nichtfreigegeben', RichtigOderFalschNichtFreigegeben.as_view(), name='richtigoderfalsch_nichtfreigegeben'),
      path('ergebnis', ErgebnisHome.as_view(), name='ergebnis_start'),
      path('ergebnistoppunkte', ErgebnisTopPunkte.as_view(), name='ergebnis_toppunkte'),
      path('ergebnistopgroupbypunkte', ErgebnisTopGroupByPunkte.as_view(), name='ergebnis_topgroupbypunkte'),

@@ -16,6 +16,7 @@
 			<tr><td> Antwort3 richtig?:</td><td class="text-center">{{ frage.antwort3richtig }}</td></tr>
 			<tr><td> Antwort4:</td><td class="text-center"> {{ frage.antwort4 }}</td></tr>
 			<tr><td> Antwort4 richtig?:</td><td class="text-center">{{ frage.antwort4richtig }}</td></tr>
+			<tr><td> Frage freigegeben?:</td><td class="text-center">{{ frage.freigegeben }}</td></tr>
 			</table>
     		<a class="btn btn-secondary btn-sm" href="{% url 'frage_start' %}">Zurück</a>
     		<a class="btn btn-danger btn-sm" href="{% url 'frage_delete' frage.pk %}">Löschen</a>

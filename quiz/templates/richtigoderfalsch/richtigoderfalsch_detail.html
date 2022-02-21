@@ -9,6 +9,7 @@
             <tr><td width=50%>Name:</td><td class="text-center">  {{ richtigoderfalsch.name }}</td></tr>
 	        <tr><td> Kurs:</td><td class="text-center">  {{ richtigoderfalsch.kurs }}</td></tr>
 	        <tr><td> Behauptung wahr?:</td><td class="text-center">  {{ richtigoderfalsch.behauptungrichtig }}</td></tr>
+			<tr><td> Frage freigegeben?:</td><td class="text-center">{{ richtigoderfalsch.freigegeben }}</td></tr>
             </table>
 
             <a class="btn btn-secondary btn-sm" href="{% url 'richtigoderfalsch_start' %}">Zurück</a>
