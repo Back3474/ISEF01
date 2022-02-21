@@ -98,6 +98,8 @@ class FrageHome(AuthListView):
     model = Frage
     template_name = 'frage/frage_home.html'
     permission_required = ('quiz.view_frage')
+    def get_queryset(self):
+        return Frage.objects.filter(freigegeben = True)
 	
 class FrageNichtFreigegeben(AuthListView): 
     model = Frage
@@ -136,6 +138,8 @@ class RichtigOderFalschHome(AuthListView):
     model = RichtigOderFalsch
     template_name = 'richtigoderfalsch/richtigoderfalsch_home.html'
     permission_required = ('quiz.view_richtigoderfalsch')
+    def get_queryset(self):
+        return RichtigOderFalsch.objects.filter(freigegeben = True)
 	
 class RichtigOderFalschNichtFreigegeben(AuthListView): 
     model = RichtigOderFalsch
