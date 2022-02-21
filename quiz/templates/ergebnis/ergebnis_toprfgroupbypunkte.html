@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2 class="text-center">Alle Egebnisse</h2>
+<div class="text-center">
+	<p><button type="button" class="btn btn-outline-secondary" onclick="location.href='{% url 'ergebnis_topgroupbypunkte'  %}'"> Rangliste: Gesamtpunkte</button></p>
+	<p><button type="button" class="btn btn-outline-secondary " onclick="location.href='{% url 'ergebnis_topmcgroupbypunkte' %}'"> Rangliste: Multiple Choice</button></p>
+	<p><button type="button" class="btn btn-outline-secondary" onclick="location.href='{% url 'ergebnis_toprfgroupbypunkte' %}'"> Rangliste: Richtig oder Falsch?</button></p>
+</div>
+<h2 class="text-center">Rangliste: Richtig oder Falsch?</h2>
 
 <div class="container text-center">
 	<div class="row justify-content-md-center">
