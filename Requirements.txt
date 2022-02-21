@@ -3,5 +3,13 @@ env/Scripts/activate
 
 pip install Django==3.2
 pip install django-url-params
+pip install django-axes
 
 python manage.py runserver
+
+
+
+
+
+## This will reset all account locks
+$ python manage.py axes_reset
