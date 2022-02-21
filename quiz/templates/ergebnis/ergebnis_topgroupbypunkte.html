@@ -8,15 +8,13 @@
 		<div class="col-sm-8 ">
 			<table  class ="table border table-hover table-striped">
 				<thead class="table-dark">
-					<th width=100 scope = "col">Testmodus</th>
-					<th width=550 scope = "col">Benutzername</th>
+					<th width=350 scope = "col">Benutzername</th>
 					<th scope = "col">Punkte</th>
 				</thead>
 
 				<tbody>
 				{% for ergebnis in object_list %}
 					<tr>
-						<td> <a href="{% url 'ergebnis_detail' ergebnis.pk %}">{{ ergebnis.testmodus }}</a> </td>
 						<td> <a href="{% url 'ergebnis_detail' ergebnis.pk %}">{{ ergebnis.benutzername }}</a> </td>
 						<td> <a href="{% url 'ergebnis_detail' ergebnis.pk %}">{{ ergebnis.punkte }}</a> </td>
 					</tr>
