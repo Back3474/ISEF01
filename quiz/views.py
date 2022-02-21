@@ -29,11 +29,8 @@ from django.contrib import messages
 #from django.urls import reverse
 from django.shortcuts import redirect
 
-# Create your views here.
+# views
 
-#class MyAccessMixin(AccessMixin):
-#    def handle_no_permission(self):
-#        return redirect_to(self.request.get_full_path(), self.get_login_url(), self.get_redirect_field_name())
 
 class AuthListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     login_url = '/accounts/login/'
