@@ -22,7 +22,6 @@ from django.db.models import Count
 from django.db.models import Sum
 
 from urlparams.redirect import param_redirect #
-#from django.core.exceptions import ValidationError
 from django.contrib import messages
 #from django.http import HttpResponse
 #from django.http import HttpResponseRedirect
@@ -262,8 +261,6 @@ def MCTestSelect(request):
   if request.method == "POST":
     form = TestSelectForm(request.POST)
     if form.is_valid():
-       #form.save()
-       #return HttpResponseRedirect('/index.html')
         data = form.cleaned_data.get("kurs")
         questioncount = form.cleaned_data.get("questioncount")
         mcfragenanzahlkurs=Frage.objects.filter(kurs = data.id, freigegeben = True).count()
@@ -280,10 +277,8 @@ def MCTestSelect(request):
            print("keine Fragen verfügbar für",data.name)
            messages.error(request, 'Es sind keine Fragen für %s verfügbar'%data.name)
            messages.error(request, form.errors)
-           #form.add_error(ValidationError('You don\'t have access to this page'))
         else:
            return param_redirect(request, 'mctest_start', data.id, questioncount) #, data.id, data.name)
-        #return render(request,'mctest/mctest_start.html',context)
 	  
   else:
       form = TestSelectForm()
@@ -294,8 +289,7 @@ def RFTestSelect(request):
   if request.method == "POST":
     form = TestSelectForm(request.POST)
     if form.is_valid():
-       #form.save()
-       #return HttpResponseRedirect('/index.html')
+
         data = form.cleaned_data.get("kurs")
         questioncount = form.cleaned_data.get("questioncount")
         rffragenanzahlkurs=RichtigOderFalsch.objects.filter(kurs = data.id, freigegeben = True).count()
@@ -355,7 +349,6 @@ def MCTestStart(request, arg1, arg2):
 	
     if request.method == 'POST':
         print(request.POST)
-        #fragen=Frage.objects.all()
 
         mcfragen=mcfragenrandom
         mcfragenanzahl=len(mcfragen)
@@ -417,7 +410,6 @@ def MCTestStart(request, arg1, arg2):
         reg.save()
         return render(request,'mctest/mctest_result.html',context)
     else:
-        #fragen=Frage.objects.all()
         print(arg1)
         print(arg2)
 		
@@ -458,7 +450,6 @@ def RFTestStart(request, arg1, arg2):
 
         for rf in rffragen:
             total+=1
-            #answers=(request.POST.getlist(rf.name))
             answers=request.POST.get(rf.name)
             boolantwort=bool(False)
 
