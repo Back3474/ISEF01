@@ -55,10 +55,42 @@ class Ergebnis(models.Model):
     fragentotal = models.IntegerField(blank=False)
     fragenkorrekt = models.IntegerField(blank=False)
     fragenfalsch = models.IntegerField(blank=False)
-
 	
     def __str__(self):
         return self.benutzername
 		
     def get_absolute_url(self):
         return reverse('ergebnis_detail', args=[str(self.id)])
+		
+class MeldungMCFragen(models.Model):
+
+    kursname = models.CharField(max_length=50,blank=False)
+    kursid = models.ForeignKey(Kurs,null=True,blank=False,on_delete=models.CASCADE)
+    frageid = models.ForeignKey(Frage,null=True,blank=False,on_delete=models.CASCADE)
+    frage = models.CharField(max_length=255,blank=False)
+    nachricht = models.CharField(max_length=500,blank=False)
+    benutzername = models.CharField(max_length=50,blank=False)
+    gelesen=models.BooleanField(default=False)
+	
+    def __str__(self):
+        return self.frage
+		
+    def get_absolute_url(self):
+        return reverse('meldungmcfragen_detail', args=[str(self.id)])
+
+	
+class MeldungRFFragen(models.Model):
+
+    kursname = models.CharField(max_length=50,blank=False)
+    kursid = models.ForeignKey(Kurs,null=True,blank=False,on_delete=models.CASCADE)
+    frageid = models.ForeignKey(RichtigOderFalsch,null=True,blank=False,on_delete=models.CASCADE)
+    frage = models.CharField(max_length=255,blank=False)
+    nachricht = models.CharField(max_length=500,blank=False)
+    benutzername = models.CharField(max_length=50,blank=False)
+    gelesen=models.BooleanField(default=False)
+	
+    def __str__(self):
+        return self.frage
+		
+    def get_absolute_url(self):
+        return reverse('meldungrffragen_detail', args=[str(self.id)])

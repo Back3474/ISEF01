@@ -28,9 +28,23 @@ from .views import ErgebnisDetail
 from .views import index
 from .views import MCTestSelect
 from .views import RFTestSelect
-from .views import TestStart
+from .views import MeldungMCFrageSelect
+from .views import MeldungRFFrageSelect
 from .views import MCTestStart
 from .views import RFTestStart
+from .views import LadeMCFragen
+from .views import LadeRFFragen
+from .views import MeldungMCFragenHome
+from .views import MeldungMCFragenDetail
+from .views import MeldungMCFragenUpdate
+from .views import MeldungMCFragenDelete
+from .views import MeldungMCFragenUpdateNichtGelesen
+from .views import MeldungRFFragenHome
+from .views import MeldungRFFragenDetail
+from .views import MeldungRFFragenUpdate
+from .views import MeldungRFFragenDelete
+from .views import MeldungRFFragenUpdateNichtGelesen
+
 
 urlpatterns = [
      #path('', KursHome.as_view(), name='kurs_start'),
@@ -48,7 +62,7 @@ urlpatterns = [
      path('ergebnisrftoppunkte', ErgebnisRFTopPunkte.as_view(), name='ergebnis_rftoppunkte'),
      path('ergebnistoprfgroupbypunkte', ErgebnisTopRFGroupByPunkte.as_view(), name='ergebnis_toprfgroupbypunkte'),	 
 	 path('mctest', MCTestSelect, name='mctest_select'),
-     path('rftest', RFTestSelect, name='rftest_select'),
+     path('rftest', RFTestSelect, name='rftest_select'),#
 	 path('mctest/<arg1>', MCTestStart, name='mctest_start'),
 	 path('mctest/<arg1>/<arg2>', MCTestStart, name='mctest_start'),
      path('rftest/<arg1>', RFTestStart, name='rftest_start'),
@@ -66,4 +80,18 @@ urlpatterns = [
 	 path('kurs/<int:pk>/delete/', KursDelete.as_view(), name='kurs_delete'),
 	 path('frage/<int:pk>/delete/', FrageDelete.as_view(), name='frage_delete'),
      path('richtigoderfalsch/<int:pk>/delete/', RichtigOderFalschDelete.as_view(), name='richtigoderfalsch_delete'),
+     path('ajax/lade-mcfragen/', LadeMCFragen, name='ajax_lade_mcfragen'), 
+     path('ajax/lade-rffragen/', LadeRFFragen, name='ajax_lade_rffragen'), 
+     path('meldungmcfrage', MeldungMCFrageSelect, name='meldungmcfrage_select'),
+	 path('meldungmcfragen', MeldungMCFragenHome.as_view(), name='meldungmcfragen'),
+	 path('meldungmcfragenungelesen', MeldungMCFragenUpdateNichtGelesen.as_view(), name='meldungmcfragen_ungelesen'),
+     path('meldungmcfragen/<int:pk>/', MeldungMCFragenDetail.as_view(), name='meldungmcfragen_detail'),
+	 path('meldungmcfragen/<int:pk>/update/', MeldungMCFragenUpdate.as_view(), name='meldungmcfragen_update'),
+	 path('meldungmcfragen/<int:pk>/delete/', MeldungMCFragenDelete.as_view(), name='meldungmcfragen_delete'),
+     path('meldungrffrage', MeldungRFFrageSelect, name='meldungrffrage_select'),
+	 path('meldungrffragen', MeldungRFFragenHome.as_view(), name='meldungrffragen'),
+     path('meldungrffragen/<int:pk>/', MeldungRFFragenDetail.as_view(), name='meldungrffragen_detail'),
+	 path('meldungrffragen/<int:pk>/update/', MeldungRFFragenUpdate.as_view(), name='meldungrffragen_update'),
+	 path('meldungrffragen/<int:pk>/delete/', MeldungRFFragenDelete.as_view(), name='meldungrffragen_delete'),
+	 path('meldungrffragenungelesen', MeldungRFFragenUpdateNichtGelesen.as_view(), name='meldungrffragen_ungelesen'),
 ]

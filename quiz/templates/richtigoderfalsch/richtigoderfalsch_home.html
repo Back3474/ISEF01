@@ -3,6 +3,9 @@
 {% block content %}
 <div class="text-center">
 	<p><button type="button" class="btn btn-outline-secondary" onclick="location.href='{% url 'richtigoderfalsch_nichtfreigegeben'  %}'"> Nicht freigegebene RF-Fragen</button></p>
+	<p><button type="button" class="btn btn-outline-secondary" onclick="location.href='{% url 'meldungrffrage_select'  %}'"> RF-Fragen melden</button></p>
+	<p><button type="button" class="btn btn-outline-secondary" onclick="location.href='{% url 'meldungrffragen'  %}'">Alle gemeldete RF-Fragen</button></p>
+	<p><button type="button" class="btn btn-outline-secondary" onclick="location.href='{% url 'meldungrffragen_ungelesen'  %}'"> Alle nicht gelesenen gemeldeten RF-Fragen</button></p>
 </div>
 <div class="container text-center">
 	<div class="row justify-content-md-center">

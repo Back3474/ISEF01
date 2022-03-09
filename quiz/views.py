@@ -13,9 +13,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.mixins import AccessMixin
 
-from .models import Kurs, Frage, RichtigOderFalsch, Ergebnis
+from .models import Kurs, Frage, RichtigOderFalsch, Ergebnis, MeldungMCFragen, MeldungRFFragen
 from .forms import TestSelectForm
-from .forms import ParaTestForm
+from .forms import MeldungMCFrageForm
+from .forms import MeldungRFFrageForm
 
 import random
 from django.db.models import Count
@@ -238,6 +239,68 @@ class ErgebnisDetail(AuthDetailView):
     model = Ergebnis
     template_name = 'ergebnis/ergebnis_detail.html'
     permission_required = ('quiz.view_ergebnis')
+	
+class MeldungMCFragenHome(AuthListView): 
+    model = MeldungMCFragen
+    template_name = 'meldungmcfrage/meldungmcfragen_home.html'
+    permission_required = ('quiz.view_meldungmcfragen')
+
+class MeldungMCFragenDetail(AuthDetailView): 
+    model = MeldungMCFragen
+    template_name = 'meldungmcfrage/meldungmcfragen_detail.html'
+    permission_required = ('quiz.view_meldungmcfragen')
+	
+class MeldungMCFragenDelete(AuthDeleteView):
+    model =  MeldungMCFragen
+    template_name = 'meldungmcfrage/meldungmcfragen_delete.html'
+    success_url = reverse_lazy('meldungmcfragen')
+    permission_required = ('quiz.delete_meldungmcfragen')
+	
+class MeldungMCFragenUpdate(AuthUpdateView):
+    model = MeldungMCFragen
+    template_name = 'meldungmcfrage/meldungmcfragen_update.html'
+    fields = '__all__'
+    permission_required = ('quiz.change_meldungmcfragen')
+	
+class MeldungMCFragenUpdateNichtGelesen(AuthListView): 
+    model = MeldungMCFragen
+    template_name = 'meldungmcfrage/meldungmcfragen_unread.html'
+    fields = '__all__'
+    permission_required = ('quiz.view_meldungmcfragen')
+
+    def get_queryset(self):
+        return MeldungMCFragen.objects.raw('select id, frage, nachricht, benutzername, frageid_id, kursid_id, kursname, gelesen FROM quiz_meldungmcfragen where gelesen = "0"')
+		
+class MeldungRFFragenHome(AuthListView): 
+    model = MeldungRFFragen
+    template_name = 'meldungrffrage/meldungrffragen_home.html'
+    permission_required = ('quiz.view_meldungrffragen')
+
+class MeldungRFFragenDetail(AuthDetailView): 
+    model = MeldungRFFragen
+    template_name = 'meldungrffrage/meldungrffragen_detail.html'
+    permission_required = ('quiz.view_meldungrffragen')
+	
+class MeldungRFFragenDelete(AuthDeleteView):
+    model =  MeldungRFFragen
+    template_name = 'meldungrffrage/meldungrffragen_delete.html'
+    success_url = reverse_lazy('meldungrffragen')
+    permission_required = ('quiz.delete_meldungrffragen')
+	
+class MeldungRFFragenUpdate(AuthUpdateView):
+    model = MeldungRFFragen
+    template_name = 'meldungrffrage/meldungrffragen_update.html'
+    fields = '__all__'
+    permission_required = ('quiz.change_meldungrffragen')
+
+class MeldungRFFragenUpdateNichtGelesen(AuthListView): 
+    model = MeldungRFFragen
+    template_name = 'meldungrffrage/meldungrffragen_unread.html'
+    fields = '__all__'
+    permission_required = ('quiz.view_meldungrffragen')
+
+    def get_queryset(self):
+        return MeldungRFFragen.objects.raw('select id, frage, nachricht, benutzername, frageid_id, kursid_id, kursname, gelesen FROM quiz_meldungrffragen where gelesen = "0"')
 
 @login_required(login_url='/accounts/login/')
 def index(request):
@@ -313,7 +376,7 @@ def RFTestSelect(request):
       form = TestSelectForm()
   return render(request, 'rftest/rftest_select.html', {'form': form})
 
-  
+'''
 @login_required(login_url='/accounts/login/')	
 def TestStart(request, arg1): #, arg2
   if request.method == "POST":
@@ -332,7 +395,62 @@ def TestStart(request, arg1): #, arg2
       form.fields["arg1"].initial = arg1
       #form.fields["arg2"].initial = arg2
   return render(request, 'mctest/mctest_start.html', {'form': form})
+'''
+
+@login_required(login_url='/accounts/login/')	
+def MeldungMCFrageSelect(request):
+  if request.method == "POST":
+    form = MeldungMCFrageForm(request.POST)
+    if form.is_valid():
+        kurs = form.cleaned_data.get("kurs")
+        frage = form.cleaned_data.get("frage")
+        nachricht = form.cleaned_data.get("nachricht")
+        print(kurs)
+        print(kurs.id)
+        print(frage.id)
+        print(frage)
+        print(nachricht)
+        reg = MeldungMCFragen(kursname=kurs.name, kursid=kurs, frageid=frage, frage=frage.name, nachricht=nachricht, benutzername=request.user.username )
+        reg.save()
+        return render(request,'index.html')
+
+  else:
+      form = MeldungMCFrageForm()
+  return render(request, 'meldungmcfrage/meldungmcfrage.html', {'form': form})
   
+@login_required(login_url='/accounts/login/')	
+def MeldungRFFrageSelect(request):
+  if request.method == "POST":
+    form = MeldungRFFrageForm(request.POST)
+    if form.is_valid():
+        kurs = form.cleaned_data.get("kurs")
+        frage = form.cleaned_data.get("frage")
+        nachricht = form.cleaned_data.get("nachricht")
+        print(kurs)
+        print(kurs.id)
+        print(frage.id)
+        print(frage)
+        print(nachricht)
+        regrf = MeldungRFFragen(kursname=kurs.name, kursid=kurs, frageid=frage, frage=frage.name, nachricht=nachricht, benutzername=request.user.username )
+        regrf.save()
+        return render(request,'index.html')
+
+  else:
+      form = MeldungRFFrageForm()
+  return render(request, 'meldungrffrage/meldungrffrage.html', {'form': form})
+
+def LadeMCFragen(request):
+    kurs_id = request.GET.get('kurs')
+    #print(kurs_id)
+    fragen = Frage.objects.filter(kurs=kurs_id, freigegeben = True).order_by('name')
+    return render(request, 'meldungmcfrage/meldungmcfrage_dropdownlist.html', {'fragen': fragen})
+
+def LadeRFFragen(request):
+    kurs_id = request.GET.get('kurs')
+    #print(kurs_id)
+    fragen = RichtigOderFalsch.objects.filter(kurs=kurs_id, freigegeben = True).order_by('name')
+    return render(request, 'meldungrffrage/meldungrffrage_dropdownlist.html', {'fragen': fragen})
+ 
 def str2bool(v):
   return v.lower() in ("on") 
 
