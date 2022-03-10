@@ -47,7 +47,6 @@ from .views import MeldungRFFragenUpdateNichtGelesen
 
 
 urlpatterns = [
-     #path('', KursHome.as_view(), name='kurs_start'),
 	 path('', index, name='index'),
      path('kurs', KursHome.as_view(), name='kurs_start'),
 	 path('frage', FrageHome.as_view(), name='frage_start'),
@@ -62,7 +61,7 @@ urlpatterns = [
      path('ergebnisrftoppunkte', ErgebnisRFTopPunkte.as_view(), name='ergebnis_rftoppunkte'),
      path('ergebnistoprfgroupbypunkte', ErgebnisTopRFGroupByPunkte.as_view(), name='ergebnis_toprfgroupbypunkte'),	 
 	 path('mctest', MCTestSelect, name='mctest_select'),
-     path('rftest', RFTestSelect, name='rftest_select'),#
+     path('rftest', RFTestSelect, name='rftest_select'),
 	 path('mctest/<arg1>', MCTestStart, name='mctest_start'),
 	 path('mctest/<arg1>/<arg2>', MCTestStart, name='mctest_start'),
      path('rftest/<arg1>', RFTestStart, name='rftest_start'),

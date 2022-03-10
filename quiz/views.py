@@ -24,9 +24,6 @@ from django.db.models import Sum
 
 from urlparams.redirect import param_redirect #
 from django.contrib import messages
-#from django.http import HttpResponse
-#from django.http import HttpResponseRedirect
-#from django.urls import reverse
 from django.shortcuts import redirect
 
 # views
@@ -35,31 +32,26 @@ from django.shortcuts import redirect
 class AuthListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     login_url = '/accounts/login/'
     redirect_field_name = 'redirect_to'
-    #raise_exception = True
     permission_denied_message = 'Keine Berechtigung'
 
 class AuthDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     login_url = '/accounts/login/'
     redirect_field_name = 'redirect_to'
-    #raise_exception = True
     permission_denied_message = 'Keine Berechtigung'
 
 class AuthCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     login_url = '/accounts/login/'
     redirect_field_name = 'redirect_to'
-    #raise_exception = True
     permission_denied_message = 'Keine Berechtigung'
 	
 class AuthUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     login_url = '/accounts/login/'
     redirect_field_name = 'redirect_to'
-    #raise_exception = True
     permission_denied_message = 'Keine Berechtigung'
 
 class AuthDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     login_url = '/accounts/login/'
     redirect_field_name = 'redirect_to'
-    #raise_exception = True
     permission_denied_message = 'Keine Berechtigung'
 
 class KursHome(AuthListView): 
@@ -149,7 +141,6 @@ class RichtigOderFalschNichtFreigegeben(AuthListView):
 class RichtigOderFalschCreate(AuthCreateView):
     model = RichtigOderFalsch
     template_name = 'richtigoderfalsch/richtigoderfalsch_create.html'
-#    fields = '__all__'
     fields = ['name','kurs','behauptungrichtig']
     success_url = reverse_lazy('richtigoderfalsch_start')
     permission_required = ('quiz.add_richtigoderfalsch')
@@ -341,7 +332,7 @@ def MCTestSelect(request):
            messages.error(request, 'Es sind keine Fragen für %s verfügbar'%data.name)
            messages.error(request, form.errors)
         else:
-           return param_redirect(request, 'mctest_start', data.id, questioncount) #, data.id, data.name)
+           return param_redirect(request, 'mctest_start', data.id, questioncount)
 	  
   else:
       form = TestSelectForm()
@@ -370,7 +361,7 @@ def RFTestSelect(request):
            messages.error(request, 'Es sind keine Fragen für %s verfügbar'%data.name)
            messages.error(request, form.errors)
         else:
-           return param_redirect(request, 'rftest_start', data.id, questioncount) #, data.id, data.name)
+           return param_redirect(request, 'rftest_start', data.id, questioncount)
 	  
   else:
       form = TestSelectForm()
@@ -441,13 +432,11 @@ def MeldungRFFrageSelect(request):
 
 def LadeMCFragen(request):
     kurs_id = request.GET.get('kurs')
-    #print(kurs_id)
     fragen = Frage.objects.filter(kurs=kurs_id, freigegeben = True).order_by('name')
     return render(request, 'meldungmcfrage/meldungmcfrage_dropdownlist.html', {'fragen': fragen})
 
 def LadeRFFragen(request):
     kurs_id = request.GET.get('kurs')
-    #print(kurs_id)
     fragen = RichtigOderFalsch.objects.filter(kurs=kurs_id, freigegeben = True).order_by('name')
     return render(request, 'meldungrffrage/meldungrffrage_dropdownlist.html', {'fragen': fragen})
  
@@ -531,7 +520,7 @@ def MCTestStart(request, arg1, arg2):
         print(arg1)
         print(arg2)
 		
-        mcfragen=Frage.objects.filter(kurs = arg1, freigegeben = True) #[:qcount]
+        mcfragen=Frage.objects.filter(kurs = arg1, freigegeben = True)
         randompool= list(mcfragen)
         random.shuffle(randompool)
         mcfragenrandom=randompool[:qcount]
@@ -607,7 +596,7 @@ def RFTestStart(request, arg1, arg2):
         print(arg1)
         print(arg2)		
 
-        rffragen=RichtigOderFalsch.objects.filter(kurs = arg1, freigegeben = True) #[:qcount]
+        rffragen=RichtigOderFalsch.objects.filter(kurs = arg1, freigegeben = True)
         randompool= list(rffragen)
         random.shuffle(randompool)
         rffragenrandom=randompool[:qcount]

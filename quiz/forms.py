@@ -31,8 +31,6 @@ class MeldungMCFrageForm(forms.Form):
                 self.fields['frage'].queryset = Frage.objects.filter(kurs=kurs_id, freigegeben = True).order_by('name')
             except (ValueError, TypeError):
                 pass 
-        #elif self.instance.pk:
-            #self.fields['frage'].queryset = self.instance.kurs.frage_set.order_by('name')
 
 class MeldungRFFrageForm(forms.Form):
     kurs = forms.ModelChoiceField(queryset=Kurs.objects.all(),required=True)								 
@@ -49,5 +47,3 @@ class MeldungRFFrageForm(forms.Form):
                 self.fields['frage'].queryset = RichtigOderFalsch.objects.filter(kurs=kurs_id, freigegeben = True).order_by('name')
             except (ValueError, TypeError):
                 pass 
-        #elif self.instance.pk:
-            #self.fields['frage'].queryset = self.instance.kurs.RichtigOderFalsch_set.order_by('name')
