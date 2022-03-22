@@ -367,27 +367,6 @@ def RFTestSelect(request):
       form = TestSelectForm()
   return render(request, 'rftest/rftest_select.html', {'form': form})
 
-'''
-@login_required(login_url='/accounts/login/')	
-def TestStart(request, arg1): #, arg2
-  if request.method == "POST":
-    form = ParaTestForm(request.POST)
-    if form.is_valid():
-       #form.save()
-       #return HttpResponseRedirect('/index.html')
-        data1 = form.cleaned_data.get("arg1")
-        #data2 = form.cleaned_data.get("arg2")
-        #return param_redirect(request, 'index') #, data.id, data.name)
-	  
-  else:
-      form = ParaTestForm()
-      print(arg1)
-      #print(arg2)
-      form.fields["arg1"].initial = arg1
-      #form.fields["arg2"].initial = arg2
-  return render(request, 'mctest/mctest_start.html', {'form': form})
-'''
-
 @login_required(login_url='/accounts/login/')	
 def MeldungMCFrageSelect(request):
   if request.method == "POST":
@@ -439,9 +418,6 @@ def LadeRFFragen(request):
     kurs_id = request.GET.get('kurs')
     fragen = RichtigOderFalsch.objects.filter(kurs=kurs_id, freigegeben = True).order_by('name')
     return render(request, 'meldungrffrage/meldungrffrage_dropdownlist.html', {'fragen': fragen})
- 
-def str2bool(v):
-  return v.lower() in ("on") 
 
 @login_required(login_url='/accounts/login/')	  
 def MCTestStart(request, arg1, arg2):
@@ -482,19 +458,6 @@ def MCTestStart(request, arg1, arg2):
                 boolantwort3=bool(True)
             if '4' in str(answers):
                 boolantwort4=bool(True)
-            print(boolantwort1)
-            print(boolantwort2)
-            print(boolantwort3)
-            print(boolantwort4)
-
-            print("Richige Antwort")
-            print(f.antwort1richtig)
-            print(f.antwort2richtig)
-            print(f.antwort3richtig)
-            print(f.antwort4richtig)
-            print()
-
-#
 
             if bool(boolantwort1) is bool(f.antwort1richtig) and bool(boolantwort2) is bool(f.antwort2richtig) and bool(boolantwort3) is bool(f.antwort3richtig) and bool(boolantwort4) is bool(f.antwort4richtig):
                 punkte+=1
